@@ -374,11 +374,11 @@ public static class MessageHelper
             while (cmd.Contains("{arg:qq}", StringComparison.CurrentCulture))
                 cmd = cmd.Replace("{arg:qq}", $"{player.QQ}");
             string argStr = "";
-            for (int a = haveAt ? 3 : 2; a < msg.Count; a++)
+            for (int a = 0; a < msg.Count; a++)
             {
                 if (!string.IsNullOrEmpty(msg[a].data.text))
                 {
-                    argStr += msg[a];
+                    argStr += msg[a].data.text;
                 }
             }
             var arg = argStr.Split(" ");
