@@ -491,9 +491,9 @@ public static class MessageHelper
             {
                 SendMessage(group, player, raw, msglist);
             }
-            string msg_low = raw;
             if (raw.StartsWith(Minecraft_QQ.MainConfig.Check.Head) && group.EnableCommand == true)
             {
+                string msg_low = raw[Minecraft_QQ.MainConfig.Check.Head.Length..];
                 var head = msglist[0];
                 if (head.type != "text")
                 {

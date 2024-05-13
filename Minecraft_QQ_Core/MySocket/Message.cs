@@ -33,9 +33,14 @@ internal static class Message
         return Encoding.UTF8.GetString(bytes);
     }
 
-    public static IByteBuffer WriteString(this IByteBuffer data, string tmep)
+    public static IByteBuffer WriteString(this IByteBuffer data, string text)
     {
-        var bytes = Encoding.UTF8.GetBytes(tmep);
+        if (text == null)
+        {
+            data.WriteInt(0);
+            return data;
+        }
+        var bytes = Encoding.UTF8.GetBytes(text);
         data.WriteInt(bytes.Length);
         data.WriteBytes(bytes);
 
