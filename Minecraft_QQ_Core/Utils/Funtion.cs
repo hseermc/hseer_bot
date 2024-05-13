@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Minecraft_QQ_Core.Robot;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -108,15 +109,13 @@ public static class Funtion
         else
             return a[x..];
     }
-    public static string? GetRich(string a)
+    public static string? GetRich(GroupMessagePack.Message a)
     {
         try
         {
-            if (a.StartsWith('{'))
+            if (a.type == "json")
             {
-                int index = a.LastIndexOf('}');
-                a = a[..(index + 1)];
-                var obj = JObject.Parse(a);
+                var obj = JObject.Parse(a.data["data"]!.ToString());
                 var app = obj["app"]?.ToString();
                 if (app == "com.tencent.qq.checkin")
                 {
@@ -132,13 +131,12 @@ public static class Funtion
                 }
 
             }
-            else if (a.StartsWith("<?xml"))
+            else if (a.type == "forward")
             {
-                int index = a.LastIndexOf('>');
-                a = a[..(index + 1)];
+                string text = a.GetText()!;
                 XmlDocument doc = new();
-                doc.LoadXml(a);
-                if (a.Contains("聊天记录"))
+                doc.LoadXml(text);
+                if (text.Contains("聊天记录"))
                 {
                     var items = "";
                     var body = doc.GetElementsByTagName("title");
@@ -151,7 +149,7 @@ public static class Funtion
                     items = items[..^1];
                     return "聊天记录：" + title + "\n" + items;
                 }
-                else if (a.Contains("推荐群聊"))
+                else if (text.Contains("推荐群聊"))
                 {
                     var body = doc.GetElementsByTagName("msg");
                     var title = body[0]!.Attributes!.GetNamedItem("brief");
@@ -165,6 +163,6 @@ public static class Funtion
         {
             Logs.LogError(e);
         }
-        return a;
+        return null;
     }
 }

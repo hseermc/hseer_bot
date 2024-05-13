@@ -243,8 +243,8 @@ public static class Minecraft_QQ
     /// <param name="name">玩家ID</param>
     public static void UnmutePlayer(string name)
     {
-        if (PlayerConfig.MuteList.Contains(name.ToLower()) == true)
-            PlayerConfig.MuteList.Remove(name.ToLower());
+        name = name.ToLower();
+        PlayerConfig.MuteList.Remove(name);
         if (MysqlOK == true)
             Task.Run(() => MyMysql.DeleteMuteAsync(name));
         else

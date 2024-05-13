@@ -75,7 +75,6 @@ public static class PluginServer
                     pipeline.AddLast(new LoggingHandler("Minecraft_QQ"));
                     pipeline.AddLast(new LengthFieldPrepender(4));
                     pipeline.AddLast(new LengthFieldBasedFrameDecoder(1024 * 8, 0, 4, 0, 4));
-
                     pipeline.AddLast(new PluginServerHandler());
                 }));
 

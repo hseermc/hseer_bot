@@ -22,5 +22,5 @@ public class IMinecraft_QQ
     public static ShowMessage ShowMessageCall;
     public static ConfigInit ConfigInitCall;
     public static Gui GuiCall { get; set; }
-    public static Log LogCall;
+    public static Log LogCall { get; set; }
 }

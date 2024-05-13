@@ -1,8 +1,6 @@
 ﻿using Minecraft_QQ_Core;
 using Minecraft_QQ_Core.Config;
 using System;
-using System.Runtime.InteropServices;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Minecraft_QQ_Cmd;
@@ -22,7 +20,7 @@ class Program
         {
             while (true)
             {
-                string a = Console.ReadLine();
+                string? a = Console.ReadLine();
                 var arg = a.Split(' ');
                 switch (arg[0])
                 {
@@ -58,28 +56,31 @@ class Program
 
     private static void ConfigInit() 
     {
-        if (Environment.UserInteractive)
+        if (Minecraft_QQ.MainConfig.Admin.NoInput)
         {
-            Console.WriteLine("进行初始配置");
-            while (true)
+            Console.WriteLine("你需要在配置文件中设置主群才能继续使用");
+            Environment.Exit(1);
+            return;
+        }
+        Console.WriteLine("进行初始配置");
+        while (true)
+        {
+            Console.Write("请输入主群号：");
+            string? a = Console.ReadLine();
+            if (long.TryParse(a, out var group))
             {
-                Console.Write("请输入主群号：");
-                string a = Console.ReadLine();
-                if (long.TryParse(a, out var group))
+                group = Math.Abs(group);
+                Minecraft_QQ.GroupConfig.Groups.Add(group, new()
                 {
-                    group = Math.Abs(group);
-                    Minecraft_QQ.GroupConfig.Groups.Add(group, new()
-                    {
-                        Group = group,
-                        EnableCommand = true,
-                        EnableSay = true,
-                        IsMain = true
-                    });
-                    ConfigWrite.Group();
-                    break;
-                }
-                Console.WriteLine("非法输入");
+                    Group = group,
+                    EnableCommand = true,
+                    EnableSay = true,
+                    IsMain = true
+                });
+                ConfigWrite.Group();
+                break;
             }
+            Console.WriteLine("非法输入");
         }
     }
 }

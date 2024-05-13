@@ -14,11 +14,11 @@ public static class MessageHelper
             return "错误的参数";
         if (msg[1].type == "at")
         {
-            if (!long.TryParse(msg[1].data.qq, out long qq))
+            if (!long.TryParse(msg[1].GetQQ(), out long qq))
             {
                 return "QQ号获取失败";
             }
-            string nick = msg[2].data.text.Trim();
+            string nick = msg[2].GetText()!.Trim();
             Minecraft_QQ.SetNick(qq, nick);
             return $"已修改玩家[{qq}]的昵称为：{nick}";
         }
@@ -31,7 +31,7 @@ public static class MessageHelper
         {
             return "错误的参数";
         }
-        string data = msg[0].data.text;
+        string data = msg[0].GetText()!;
         if (data.StartsWith(Minecraft_QQ.MainConfig.Check.Head))
         {
             data = data.Replace(Minecraft_QQ.MainConfig.Check.Head, null);
@@ -43,8 +43,8 @@ public static class MessageHelper
         var player = Minecraft_QQ.GetPlayer(fromQQ);
         if (player == null || string.IsNullOrWhiteSpace(player.Name) == true)
         {
-            string name = data.Replace(Minecraft_QQ.MainConfig.Check.Bind, "");
-            string check = name.Trim();
+            string name = data.Replace(Minecraft_QQ.MainConfig.Check.Bind, "").Trim();
+            string check = name.ToLower();
             if (string.IsNullOrWhiteSpace(name) || check.StartsWith("id:")
                 || check.StartsWith("id：") || check.StartsWith("id "))
             {
@@ -52,18 +52,16 @@ public static class MessageHelper
             }
             else
             {
-                name = name.Trim();
-
-                if (Minecraft_QQ.PlayerConfig.NotBindList.Contains(name.ToLower()) == true)
+                if (Minecraft_QQ.PlayerConfig.NotBindList.Contains(check) == true)
                 {
                     return $"禁止绑定名字：[{name}]";
                 }
                 Minecraft_QQ.SetPlayerName(fromQQ, name);
                 if (Minecraft_QQ.MainConfig.Setting.SendQQ != 0)
+                {
                     RobotCore.SendPrivateMessage(Minecraft_QQ.MainConfig.Setting.SendQQ,
-                    [
-                        $"玩家[{fromQQ}]绑定了名字：[{name}]"
-                    ]);
+                        [$"玩家[{fromQQ}]绑定了名字：[{name}]"]);
+                }
                 IMinecraft_QQ.GuiCall?.Invoke(GuiCallType.PlayerList);
                 return $"绑定名字：[{name}]成功！";
             }
@@ -74,12 +72,12 @@ public static class MessageHelper
 
     private static string MutePlayer(List<GroupMessagePack.Message> msg)
     {
-        if (msg.Count > 3)
+        if (msg.Count != 3)
             return "错误的参数";
         string name;
         if (msg.Count == 3 && msg[1].type == "at")
         {
-            if (!long.TryParse(msg[1].data.qq, out long qq))
+            if (!long.TryParse(msg[1].GetQQ(), out long qq))
             {
                 return "错误的文本";
             }
@@ -92,7 +90,7 @@ public static class MessageHelper
         }
         else
         {
-            name = msg[1].data.text.Trim();
+            name = msg[1].GetText()!.Trim();
             name = Funtion.ReplaceFirst(name, Minecraft_QQ.MainConfig.Check.Head, "");
         }
         Minecraft_QQ.MutePlayer(name);
@@ -108,7 +106,7 @@ public static class MessageHelper
         string name;
         if (msg.Count == 3 && msg[1].type == "at")
         {
-            if (!long.TryParse(msg[1].data.qq, out long qq))
+            if (!long.TryParse(msg[1].GetQQ(), out long qq))
             {
                 return "错误的文本";
             }
@@ -119,7 +117,7 @@ public static class MessageHelper
         }
         else
         {
-            name = msg[1].data.text.Trim();
+            name = msg[1].GetText()!.Trim();
             name = Funtion.ReplaceFirst(name, Minecraft_QQ.MainConfig.Check.Head, "");
         }
         Minecraft_QQ.UnmutePlayer(name);
@@ -132,7 +130,7 @@ public static class MessageHelper
             return "错误的参数";
         if (msg.Count == 3 && msg[1].type == "at")
         {
-            if (!long.TryParse(msg[1].data.qq, out long qq))
+            if (!long.TryParse(msg[1].GetQQ(), out long qq))
             {
                 return "错误的格式";
             }
@@ -146,7 +144,7 @@ public static class MessageHelper
         }
         else if (msg.Count == 2)
         {
-            string data = msg[1].data.text.Replace(Minecraft_QQ.MainConfig.Admin.CheckBind, "");
+            string data = msg[1].GetText()!.Replace(Minecraft_QQ.MainConfig.Admin.CheckBind, "");
             if (long.TryParse(data.Remove(0, 1), out long qq) == false)
             {
                 return "无效的QQ号";
@@ -174,11 +172,11 @@ public static class MessageHelper
         }
         if (msg[1].type == "at")
         {
-            if (!long.TryParse(msg[1].data.qq, out long qq))
+            if (!long.TryParse(msg[1].GetQQ(), out long qq))
             {
                 return "错误的文本";
             }
-            string name = msg[2].data.text.Trim();
+            string name = msg[2].GetText()!.Trim();
             Minecraft_QQ.SetPlayerName(qq, name);
             return $"已修改玩家[{qq}]ID为：{name}";
         }
@@ -280,7 +278,7 @@ public static class MessageHelper
     {
         foreach (var item in Minecraft_QQ.CommandConfig.CommandList)
         {
-            string head = msg[0].data.text;
+            string head = msg[0].GetText()!;
             head = Funtion.ReplaceFirst(head, Minecraft_QQ.MainConfig.Check.Head, "");
             if (!head.StartsWith(item.Key))
             {
@@ -342,7 +340,7 @@ public static class MessageHelper
             {
                 if (msg[1].type == "at")
                 {
-                    long qq = long.Parse(msg[1].data.qq);
+                    long qq = long.Parse(msg[1].GetQQ()!);
                     var player1 = Minecraft_QQ.GetPlayer(qq);
                     if (player1 == null)
                     {
@@ -376,9 +374,9 @@ public static class MessageHelper
             string argStr = "";
             for (int a = 0; a < msg.Count; a++)
             {
-                if (!string.IsNullOrEmpty(msg[a].data.text))
+                if (!string.IsNullOrEmpty(msg[a].GetText()!))
                 {
-                    argStr += msg[a].data.text;
+                    argStr += msg[a].GetText()!;
                 }
             }
             var arg = argStr.Split(" ");
@@ -435,6 +433,39 @@ public static class MessageHelper
         return false;
     }
 
+    private static void SendMessage(GroupObj group, PlayerObj player, string msg, List<GroupMessagePack.Message> list)
+    {
+        var config = Minecraft_QQ.MainConfig;
+        if (msg.StartsWith(config.Check.Head) && !config.Setting.SendCommand)
+        {
+            return;
+        }
+
+        if (player != null && !Minecraft_QQ.PlayerConfig.MuteList.Contains(player.Name.ToLower())
+                && !string.IsNullOrWhiteSpace(player.Name))
+        {
+            if (list[0].type != "text")
+            {
+                msg = Funtion.GetRich(list[0]);
+            }
+            if (!config.Setting.ColorEnable)
+                msg = Funtion.RemoveColorCodes(msg);
+            if (!string.IsNullOrWhiteSpace(msg))
+            {
+                var messagelist = new TranObj()
+                {
+                    group = group.Group.ToString(),
+                    message = msg,
+                    player = !Minecraft_QQ.MainConfig.Setting.SendNickServer ?
+                    player.Name : string.IsNullOrWhiteSpace(player.Nick) ?
+                    player.Name : player.Nick,
+                    command = CommderList.SPEAK
+                };
+                PluginServer.Send(messagelist);
+            }
+        }
+    }
+
     /// <summary>
     /// Type=2 群消息。
     /// </summary>
@@ -446,48 +477,31 @@ public static class MessageHelper
         if (IMinecraft_QQ.IsStart == false)
             return;
         Logs.LogOut($"[{fromGroup}][QQ:{fromQQ}]:{raw}");
+        var config = Minecraft_QQ.MainConfig;
         if (Minecraft_QQ.GroupConfig.Groups.ContainsKey(fromGroup) == true)
         {
-            GroupObj list = Minecraft_QQ.GroupConfig.Groups[fromGroup];
+            var group = Minecraft_QQ.GroupConfig.Groups[fromGroup];
+            var player = Minecraft_QQ.GetPlayer(fromQQ);
             //始终发送
-            if (Minecraft_QQ.MainConfig.Setting.AutoSend == true && Minecraft_QQ.MainConfig.Setting.FixMode == false
-                && PluginServer.IsReady() == true && list.EnableSay == true)
+
+            SendMessage(group, player, raw, msglist);
+
+            if (config.Setting.AutoSend && !config.Setting.FixMode && PluginServer.IsReady() 
+                && group.EnableSay && player != null)
             {
-                string msg_copy = raw;
-                if (Minecraft_QQ.MainConfig.Setting.SendCommand || !msg_copy.StartsWith(Minecraft_QQ.MainConfig.Check.Head))
-                {
-                    var player = Minecraft_QQ.GetPlayer(fromQQ);
-                    if (player != null && !Minecraft_QQ.PlayerConfig.MuteList.Contains(player.Name.ToLower())
-                        && !string.IsNullOrWhiteSpace(player.Name))
-                    {
-                        msg_copy = Funtion.GetRich(msg_copy) ?? msg_copy;
-                        if (Minecraft_QQ.MainConfig.Setting.ColorEnable == false)
-                            msg_copy = Funtion.RemoveColorCodes(msg_copy);
-                        if (string.IsNullOrWhiteSpace(msg_copy) == false)
-                        {
-                            var messagelist = new TranObj()
-                            {
-                                group = fromGroup.ToString(),
-                                message = msg_copy,
-                                player = !Minecraft_QQ.MainConfig.Setting.SendNickServer ?
-                                player.Name : string.IsNullOrWhiteSpace(player.Nick) ?
-                                player.Name : player.Nick,
-                                command = CommderList.SPEAK
-                            };
-                            PluginServer.Send(messagelist);
-                        }
-                    }
-                }
+                SendMessage(group, player, raw, msglist);
             }
-            if (raw.StartsWith(Minecraft_QQ.MainConfig.Check.Head) && list.EnableCommand == true)
+            string msg_low = raw;
+            if (raw.StartsWith(Minecraft_QQ.MainConfig.Check.Head) && group.EnableCommand == true)
             {
-                //去掉检测头
-                raw = Funtion.ReplaceFirst(raw, Minecraft_QQ.MainConfig.Check.Head, "");
-                string msg_low = raw.ToLower();
-                var player = Minecraft_QQ.GetPlayer(fromQQ);
+                var head = msglist[0];
+                if (head.type != "text")
+                {
+                    return;
+                }
                 if (Minecraft_QQ.MainConfig.Setting.AutoSend == false && msg_low.StartsWith(Minecraft_QQ.MainConfig.Check.Send))
                 {
-                    if (list.EnableSay == false)
+                    if (group.EnableSay == false)
                     {
                         RobotCore.SendGroupMessage(fromGroup, ["该群没有开启聊天功能"]);
                     }

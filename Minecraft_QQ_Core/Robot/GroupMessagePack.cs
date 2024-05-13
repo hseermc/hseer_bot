@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace Minecraft_QQ_Core.Robot;
 
@@ -6,15 +7,28 @@ public record GroupMessagePack
 {
     public record Message
     {
-        public record Data
-        {
-            public string text { get; set; }
-            public string file { get; set; }
-            public string url { get; set; }
-            public string qq { get; set; }
-        }
         public string type { get; set; }
-        public Data data { get; set; }
+        public JObject data { get; set; }
+
+        public string? GetText()
+        {
+            return data["text"]?.ToString();
+        }
+
+        public string? GetFile()
+        {
+            return data["file"]?.ToString();
+        }
+
+        public string? GetQQ()
+        {
+            return data["qq"]?.ToString();
+        }
+
+        public string? GetUrl()
+        {
+            return data["url"]?.ToString();
+        }
     }
     public record Sender
     {

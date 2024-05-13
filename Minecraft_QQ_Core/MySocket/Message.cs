@@ -51,65 +51,56 @@ internal static class Message
             player = read.ReadString(),
             data = read.ReadString()
         };
-        if (string.IsNullOrWhiteSpace(message.data))
+        if (message.data == DataType.data)
         {
-            return;
-        }
+            if (string.IsNullOrWhiteSpace(message.message)
+                || string.IsNullOrWhiteSpace(message.player))
+            {
+                return;
+            }
 
-        switch (message.data)
-        {
-            case DataType.data:
-                if (string.IsNullOrWhiteSpace(message.message) == true ||
-                    string.IsNullOrWhiteSpace(message.player) == true)
+            if (Minecraft_QQ.PlayerConfig.MuteList.Contains(message.player.ToLower()))
+            {
+                return;
+            }
+            if (!Minecraft_QQ.MainConfig.Setting.ColorEnable)
+            {
+                message.message = Funtion.RemoveColorCodes(message.message);
+            }
+            if (message.group == DataType.group)
+            {
+                if (Minecraft_QQ.MainConfig.Setting.SendNickGroup)
                 {
-                    return;
-                }
-
-                if (Minecraft_QQ.PlayerConfig.MuteList.Contains(message.player.ToLower()) == true)
-                {
-                    return;
-                }
-                if (!Minecraft_QQ.MainConfig.Setting.ColorEnable)
-                {
-                    message.message = Funtion.RemoveColorCodes(message.message);
-                }
-                if (message.group == DataType.group)
-                {
-                    if (Minecraft_QQ.MainConfig.Setting.SendNickGroup == true)
+                    var player = Minecraft_QQ.GetPlayer(message.player);
+                    if (player != null && !string.IsNullOrWhiteSpace(player.Nick))
                     {
-                        var player = Minecraft_QQ.GetPlayer(message.player);
-                        if (player != null && string.IsNullOrWhiteSpace(player.Nick) == false)
-                        {
-                            message.message = Funtion.ReplaceFirst(message.message, message.player, player.Nick);
-                        }
-                    }
-                    foreach (var item in Minecraft_QQ.GroupConfig.Groups)
-                    {
-                        if (item.Value.EnableSay)
-                        {
-                            SendGroup.AddSend(new()
-                            {
-                                Group = item.Key,
-                                Message = message.message
-                            });
-                        }
+                        message.message = Funtion.ReplaceFirst(message.message, message.player, player.Nick);
                     }
                 }
-                else
+                foreach (var item in Minecraft_QQ.GroupConfig.Groups)
                 {
-                    _ = long.TryParse(message.group, out long group);
-                    if (Minecraft_QQ.GroupConfig.Groups.ContainsKey(group))
+                    if (item.Value.EnableSay)
                     {
                         SendGroup.AddSend(new()
                         {
-                            Group = group,
+                            Group = item.Key,
                             Message = message.message
                         });
                     }
                 }
-                break;
-            default:
-                break;
+            }
+            else
+            {
+                _ = long.TryParse(message.group, out long group);
+                if (Minecraft_QQ.GroupConfig.Groups.ContainsKey(group))
+                {
+                    SendGroup.AddSend(new()
+                    {
+                        Group = group,
+                        Message = message.message
+                    });
+                }
+            }
         }
     }
 }
