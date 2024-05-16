@@ -64,7 +64,7 @@ public partial class WindowModel : ObservableObject
         {
             return;
         }
-        var con = Minecraft_QQ.MainConfig.Socket;
+        var con = Minecraft_QQ.Main.Socket;
         if (value == null || value == 0)
         {
             SocketPort = con.Port;
@@ -82,7 +82,7 @@ public partial class WindowModel : ObservableObject
         {
             return;
         }
-        var con = Minecraft_QQ.MainConfig.Socket;
+        var con = Minecraft_QQ.Main.Socket;
         con.Check = value;
         ConfigWrite.Config();
     }
@@ -125,7 +125,7 @@ public partial class WindowModel : ObservableObject
 
     public void LoadServer()
     {
-        var con = Minecraft_QQ.MainConfig.Socket;
+        var con = Minecraft_QQ.Main.Socket;
         SocketPort = con.Port;
         SocketCheck = con.Check;
     }
@@ -174,7 +174,7 @@ public partial class WindowModel : ObservableObject
     {
         Groups.Clear();
 
-        foreach (var item in Minecraft_QQ.GroupConfig.Groups.Values)
+        foreach (var item in Minecraft_QQ.Groups.Groups.Values)
         {
             Groups.Add(new(this, item));
         }
@@ -184,7 +184,7 @@ public partial class WindowModel : ObservableObject
     {
         Asks.Clear();
 
-        foreach (var item in Minecraft_QQ.AskConfig.AskList)
+        foreach (var item in Minecraft_QQ.Asks.AskList)
         {
             Asks.Add(new(this, item));
         }
@@ -194,7 +194,7 @@ public partial class WindowModel : ObservableObject
     {
         Commands.Clear();
 
-        foreach (var item in Minecraft_QQ.CommandConfig.CommandList)
+        foreach (var item in Minecraft_QQ.Commands.CommandList)
         {
             Commands.Add(new(item.Key, item.Value));
         }
@@ -204,21 +204,21 @@ public partial class WindowModel : ObservableObject
     {
         Players.Clear();
 
-        foreach (var item in Minecraft_QQ.PlayerConfig.PlayerList.Values)
+        foreach (var item in Minecraft_QQ.Players.PlayerList.Values)
         {
             Players.Add(new(this, item));
         }
 
         Mutes.Clear();
 
-        foreach (var item in Minecraft_QQ.PlayerConfig.MuteList)
+        foreach (var item in Minecraft_QQ.Players.MuteList)
         {
             Mutes.Add(item);
         }
 
         NotBinds.Clear();
 
-        foreach (var item in Minecraft_QQ.PlayerConfig.NotBindList)
+        foreach (var item in Minecraft_QQ.Players.NotBindList)
         {
             NotBinds.Add(item);
         }
@@ -375,7 +375,7 @@ public partial class WindowModel : ObservableObject
         DialogHost.Show(new YesNoModel("是否要删除群设置", () =>
         {
             Cancel();
-            if (Minecraft_QQ.GroupConfig.Groups.Remove(model.Obj.Group))
+            if (Minecraft_QQ.Groups.Groups.Remove(model.Obj.Group))
             {
                 ConfigWrite.Group();
                 ShowNotify("已删除群设置");
@@ -397,7 +397,7 @@ public partial class WindowModel : ObservableObject
         DialogHost.Show(new YesNoModel("是否要删除玩家", () =>
         {
             Cancel();
-            if (Minecraft_QQ.PlayerConfig.PlayerList.Remove((long)model.UserQQ))
+            if (Minecraft_QQ.Players.PlayerList.Remove((long)model.UserQQ))
             {
                 ConfigWrite.Player();
                 ShowNotify("已删除玩家");
@@ -430,7 +430,7 @@ public partial class WindowModel : ObservableObject
         DialogHost.Show(new YesNoModel("是否要删除自动应答", () =>
         {
             Cancel();
-            if (Minecraft_QQ.AskConfig.AskList.Remove(model.Check))
+            if (Minecraft_QQ.Asks.AskList.Remove(model.Check))
             {
                 ConfigWrite.Ask();
                 ShowNotify("已删除自动应答");
@@ -448,7 +448,7 @@ public partial class WindowModel : ObservableObject
         DialogHost.Show(new YesNoModel("是否要删除服务器指令", () =>
         {
             Cancel();
-            if (Minecraft_QQ.CommandConfig.CommandList.Remove(model.Check))
+            if (Minecraft_QQ.Commands.CommandList.Remove(model.Check))
             {
                 ConfigWrite.Command();
                 ShowNotify("已删除服务器指令");

@@ -8,7 +8,7 @@ public class ConfigWrite
         {
             Name = "ask",
             Local = ConfigFile.AskConfig.FullName,
-            Obj = Minecraft_QQ.AskConfig
+            Obj = Minecraft_QQ.Asks
         });
     }
     public static void Command()
@@ -17,7 +17,7 @@ public class ConfigWrite
         {
             Name = "command",
             Local = ConfigFile.CommandConfig.FullName,
-            Obj = Minecraft_QQ.CommandConfig
+            Obj = Minecraft_QQ.Commands
         });
     }
     public static void Config()
@@ -26,7 +26,7 @@ public class ConfigWrite
         {
             Name = "config",
             Local = ConfigFile.MainConfig.FullName,
-            Obj = Minecraft_QQ.MainConfig
+            Obj = Minecraft_QQ.Main
         });
     }
     public static void Group()
@@ -35,7 +35,7 @@ public class ConfigWrite
         {
             Name = "group",
             Local = ConfigFile.GroupConfig.FullName,
-            Obj = Minecraft_QQ.GroupConfig
+            Obj = Minecraft_QQ.Groups
         });
     }
     public static void Player()
@@ -44,7 +44,7 @@ public class ConfigWrite
         {
             Name = "player",
             Local = ConfigFile.PlayerConfig.FullName,
-            Obj = Minecraft_QQ.PlayerConfig
+            Obj = Minecraft_QQ.Players
         });
     }
     public static void All()

@@ -27,8 +27,8 @@ public partial class AskModel(WindowModel top, KeyValuePair<string, string> item
             return;
         }
 
-        Minecraft_QQ.AskConfig.AskList.Remove(oldValue);
-        Minecraft_QQ.AskConfig.AskList.Add(Check!, Res!);
+        Minecraft_QQ.Asks.AskList.Remove(oldValue);
+        Minecraft_QQ.Asks.AskList.Add(Check!, Res!);
         ConfigWrite.Ask();
 
         top.ShowNotify("已设置自动应答");
@@ -42,7 +42,7 @@ public partial class AskModel(WindowModel top, KeyValuePair<string, string> item
             return;
         }
 
-        Minecraft_QQ.AskConfig.AskList[Check!] = Res!;
+        Minecraft_QQ.Asks.AskList[Check!] = Res!;
         ConfigWrite.Ask();
 
         top.ShowNotify("已设置自动应答");

@@ -29,7 +29,7 @@ public partial class DatabaseModel(WindowModel top) : ObservableObject
             return;
         }
 
-        Minecraft_QQ.MainConfig.Database.Url = value;
+        Minecraft_QQ.Main.Database.Url = value;
         ConfigWrite.Config();
     }
 
@@ -40,7 +40,7 @@ public partial class DatabaseModel(WindowModel top) : ObservableObject
             return;
         }
 
-        Minecraft_QQ.MainConfig.Database.Enable = value;
+        Minecraft_QQ.Main.Database.Enable = value;
         ConfigWrite.Config();
     }
 
@@ -62,8 +62,8 @@ public partial class DatabaseModel(WindowModel top) : ObservableObject
     public void Load()
     {
         _isLoad = true;
-        Url = Minecraft_QQ.MainConfig.Database.Url;
-        EnableData = Minecraft_QQ.MainConfig.Database.Enable;
+        Url = Minecraft_QQ.Main.Database.Url;
+        EnableData = Minecraft_QQ.Main.Database.Enable;
         Update();
         _isLoad = false;
     }

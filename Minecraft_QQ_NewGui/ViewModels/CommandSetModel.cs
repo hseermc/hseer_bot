@@ -74,9 +74,9 @@ public partial class CommandSetModel : ObservableObject
                 Obj.Servers.Add(item.Name);
             }
         }
-        if (!Minecraft_QQ.CommandConfig.CommandList.TryAdd(Check, Obj))
+        if (!Minecraft_QQ.Commands.CommandList.TryAdd(Check, Obj))
         {
-            Minecraft_QQ.CommandConfig.CommandList[Check] = Obj;
+            Minecraft_QQ.Commands.CommandList[Check] = Obj;
         }
 
         ConfigWrite.Command();

@@ -3,6 +3,7 @@ using Minecraft_QQ_Core.MySocket;
 using Minecraft_QQ_Core.Robot;
 using Minecraft_QQ_Core.Utils;
 using Newtonsoft.Json;
+using OneBotSharp.Objs.Message;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,23 +29,23 @@ public static class Minecraft_QQ
     /// <summary>
     /// 主配置文件
     /// </summary>
-    public static MainConfig MainConfig { get; set; }
+    public static MainConfig Main { get; set; }
     /// <summary>
     /// 玩家储存配置
     /// </summary>
-    public static PlayerConfig PlayerConfig { get; set; }
+    public static PlayerConfig Players { get; set; }
     /// <summary>
     /// 群储存配置
     /// </summary>
-    public static GroupConfig GroupConfig { get; set; }
+    public static GroupConfig Groups { get; set; }
     /// <summary>
     /// 自动应答储存
     /// </summary>
-    public static AskConfig AskConfig { get; set; }
+    public static AskConfig Asks { get; set; }
     /// <summary>
     /// 自定义指令
     /// </summary>
-    public static CommandConfig CommandConfig { get; set; }
+    public static CommandConfig Commands { get; set; }
 
     /// <summary>
     /// QQ号取玩家
@@ -53,7 +54,7 @@ public static class Minecraft_QQ
     /// <returns>玩家信息</returns>
     public static PlayerObj? GetPlayer(long qq)
     {
-        if (PlayerConfig.PlayerList.TryGetValue(qq, out var value))
+        if (Players.PlayerList.TryGetValue(qq, out var value))
             return value;
         return null;
     }
@@ -64,7 +65,7 @@ public static class Minecraft_QQ
     /// <returns>玩家信息</returns>
     public static PlayerObj? GetPlayer(string id)
     {
-        var valueCol = PlayerConfig.PlayerList.Values.Where(a =>
+        var valueCol = Players.PlayerList.Values.Where(a =>
             a.Name.Equals(id, StringComparison.CurrentCultureIgnoreCase));
         if (valueCol.Any())
             return valueCol.First();
@@ -78,13 +79,13 @@ public static class Minecraft_QQ
     /// <param name="nick">昵称</param>
     public static void SetNick(long qq, string nick)
     {
-        if (PlayerConfig.PlayerList.ContainsKey(qq) == true)
+        if (Players.PlayerList.ContainsKey(qq) == true)
         {
-            PlayerConfig.PlayerList[qq].Nick = nick;
+            Players.PlayerList[qq].Nick = nick;
         }
         else
         {
-            PlayerConfig.PlayerList.Add(qq, new()
+            Players.PlayerList.Add(qq, new()
             {
                 QQ = qq,
                 Nick = nick
@@ -93,7 +94,7 @@ public static class Minecraft_QQ
 
         if (MysqlOK == true)
         {
-            Task.Run(() => MyMysql.AddPlayerAsync(PlayerConfig.PlayerList[qq]));
+            Task.Run(() => MyMysql.AddPlayerAsync(Players.PlayerList[qq]));
         }
         else
         {
@@ -111,9 +112,9 @@ public static class Minecraft_QQ
         var player = GetPlayer(qq) ?? new();
         player.Name = name;
         player.QQ = qq;
-        if (!PlayerConfig.PlayerList.TryAdd(qq, player))
+        if (!Players.PlayerList.TryAdd(qq, player))
         {
-            PlayerConfig.PlayerList[qq] = player;
+            Players.PlayerList[qq] = player;
         }
         if (MysqlOK == true)
         {
@@ -137,9 +138,9 @@ public static class Minecraft_QQ
         player1.Nick = player.Nick;
         player1.IsAdmin = player1.IsAdmin;
 
-        if (!PlayerConfig.PlayerList.TryAdd(player.QQ, player1))
+        if (!Players.PlayerList.TryAdd(player.QQ, player1))
         {
-            PlayerConfig.PlayerList[player.QQ] = player1;
+            Players.PlayerList[player.QQ] = player1;
         }
         if (MysqlOK == true)
         {
@@ -158,9 +159,9 @@ public static class Minecraft_QQ
     public static void MutePlayer(string name)
     {
         name = name.ToLower();
-        if (PlayerConfig.MuteList.Contains(name) == false)
+        if (Players.MuteList.Contains(name) == false)
         {
-            PlayerConfig.MuteList.Add(name);
+            Players.MuteList.Add(name);
         }
         if (MysqlOK == true)
         {
@@ -179,9 +180,9 @@ public static class Minecraft_QQ
     public static void AddNotBind(string name)
     {
         name = name.ToLower();
-        if (PlayerConfig.NotBindList.Contains(name) == false)
+        if (Players.NotBindList.Contains(name) == false)
         {
-            PlayerConfig.NotBindList.Add(name);
+            Players.NotBindList.Add(name);
         }
         if (MysqlOK == true)
         {
@@ -200,7 +201,7 @@ public static class Minecraft_QQ
     public static void RemoveNotBind(string name)
     {
         name = name.ToLower();
-        PlayerConfig.NotBindList.Remove(name);
+        Players.NotBindList.Remove(name);
         if (MysqlOK == true)
         {
             Task.Run(() => MyMysql.DeleteNotBindAsync(name));
@@ -217,9 +218,9 @@ public static class Minecraft_QQ
     /// <param name="obj">群信息</param>
     public static void AddGroup(GroupObj obj)
     {
-        if (!GroupConfig.Groups.TryAdd(obj.Group, obj))
+        if (!Groups.Groups.TryAdd(obj.Group, obj))
         {
-            GroupConfig.Groups[obj.Group] = obj;
+            Groups.Groups[obj.Group] = obj;
         }
 
         ConfigWrite.Group();
@@ -244,7 +245,7 @@ public static class Minecraft_QQ
     public static void UnmutePlayer(string name)
     {
         name = name.ToLower();
-        PlayerConfig.MuteList.Remove(name);
+        Players.MuteList.Remove(name);
         if (MysqlOK == true)
             Task.Run(() => MyMysql.DeleteMuteAsync(name));
         else
@@ -257,7 +258,7 @@ public static class Minecraft_QQ
     /// <param name="open">状态</param>
     public static void FixModeChange(bool open)
     {
-        MainConfig.Setting.FixMode = open;
+        Main.Setting.FixMode = open;
     }
 
     /// <summary>
@@ -292,51 +293,51 @@ public static class Minecraft_QQ
         if (ConfigFile.MainConfig.Exists == false)
         {
             Logs.LogOut("[Config]新建主配置");
-            MainConfig = new MainConfig();
-            File.WriteAllText(ConfigFile.MainConfig.FullName, JsonConvert.SerializeObject(MainConfig, Formatting.Indented));
+            Main = new MainConfig();
+            File.WriteAllText(ConfigFile.MainConfig.FullName, JsonConvert.SerializeObject(Main, Formatting.Indented));
         }
         else
-            MainConfig = ConfigRead.ReadConfig();
+            Main = ConfigRead.ReadConfig();
 
         //读取群设置
         if (ConfigFile.GroupConfig.Exists == false)
         {
             Logs.LogOut("[Config]新建群设置配置");
 
-            GroupConfig = new GroupConfig()
+            Groups = new GroupConfig()
             {
                 Groups = []
             };
 
-            File.WriteAllText(ConfigFile.GroupConfig.FullName, JsonConvert.SerializeObject(GroupConfig, Formatting.Indented));
+            File.WriteAllText(ConfigFile.GroupConfig.FullName, JsonConvert.SerializeObject(Groups, Formatting.Indented));
         }
         else
-            GroupConfig = ConfigRead.ReadGroup();
+            Groups = ConfigRead.ReadGroup();
 
         //读自动应答消息
         if (ConfigFile.AskConfig.Exists == false)
         {
-            AskConfig = new AskConfig
+            Asks = new AskConfig
             {
                 AskList = new Dictionary<string, string>
                 {
                     {
                         "服务器菜单",
                         $"服务器查询菜单：{Environment.NewLine}" +
-                        $"【{MainConfig.Check.Head}{MainConfig.Check.Bind} ID】可以绑定你的游戏ID。{Environment.NewLine}" +
-                        $"【{MainConfig.Check.Head}{MainConfig.Check.PlayList}】可以查询服务器在线人数。{Environment.NewLine}" +
-                        $"【{MainConfig.Check.Head}{MainConfig.Check.ServerCheck}】可以查询服务器是否在运行。{Environment.NewLine}" +
-                        $"【{MainConfig.Check.Head}{MainConfig.Check.Send} 内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，）"
+                        $"【{Main.Check.Head}{Main.Check.Bind} ID】可以绑定你的游戏ID。{Environment.NewLine}" +
+                        $"【{Main.Check.Head}{Main.Check.PlayList}】可以查询服务器在线人数。{Environment.NewLine}" +
+                        $"【{Main.Check.Head}{Main.Check.ServerCheck}】可以查询服务器是否在运行。{Environment.NewLine}" +
+                        $"【{Main.Check.Head}{Main.Check.Send} 内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，）"
                     }
                 }
             };
-            File.WriteAllText(ConfigFile.AskConfig.FullName, JsonConvert.SerializeObject(AskConfig, Formatting.Indented));
+            File.WriteAllText(ConfigFile.AskConfig.FullName, JsonConvert.SerializeObject(Asks, Formatting.Indented));
         }
         else
-            AskConfig = ConfigRead.ReadAsk();
+            Asks = ConfigRead.ReadAsk();
 
         //读取玩家数据
-        if (MainConfig.Database.Enable == true)
+        if (Main.Database.Enable == true)
         {
             MyMysql.MysqlStart();
             if (MysqlOK == false)
@@ -344,16 +345,16 @@ public static class Minecraft_QQ
                 Logs.LogOut("[Mysql]Mysql链接失败");
                 if (ConfigFile.PlayerConfig.Exists == false)
                 {
-                    PlayerConfig = new();
-                    File.WriteAllText(ConfigFile.PlayerConfig.FullName, JsonConvert.SerializeObject(PlayerConfig, Formatting.Indented));
+                    Players = new();
+                    File.WriteAllText(ConfigFile.PlayerConfig.FullName, JsonConvert.SerializeObject(Players, Formatting.Indented));
                 }
                 else
-                    PlayerConfig = ConfigRead.ReadPlayer();
+                    Players = ConfigRead.ReadPlayer();
             }
             else
             {
-                if (PlayerConfig == null)
-                    PlayerConfig = new();
+                if (Players == null)
+                    Players = new();
                 MyMysql.Load();
                 Logs.LogOut("[Mysql]Mysql已连接");
             }
@@ -363,7 +364,7 @@ public static class Minecraft_QQ
             if (ConfigFile.PlayerConfig.Exists == false)
             {
                 Logs.LogOut("[Config]新建玩家信息储存");
-                PlayerConfig = new()
+                Players = new()
                 {
                     PlayerList = new()
                     {
@@ -388,16 +389,16 @@ public static class Minecraft_QQ
                         "playerid"
                     ]
                 };
-                File.WriteAllText(ConfigFile.PlayerConfig.FullName, JsonConvert.SerializeObject(PlayerConfig, Formatting.Indented));
+                File.WriteAllText(ConfigFile.PlayerConfig.FullName, JsonConvert.SerializeObject(Players, Formatting.Indented));
             }
             else
-                PlayerConfig = ConfigRead.ReadPlayer();
+                Players = ConfigRead.ReadPlayer();
         };
 
         //读取自定义指令
         if (ConfigFile.CommandConfig.Exists == false)
         {
-            CommandConfig = new()
+            Commands = new()
             {
                 CommandList = new()
                 {
@@ -458,10 +459,10 @@ public static class Minecraft_QQ
                 }
             };
             Logs.LogOut("[Config]新建自定义指令");
-            File.WriteAllText(ConfigFile.CommandConfig.FullName, JsonConvert.SerializeObject(CommandConfig, Formatting.Indented));
+            File.WriteAllText(ConfigFile.CommandConfig.FullName, JsonConvert.SerializeObject(Commands, Formatting.Indented));
         }
         else
-            CommandConfig = ConfigRead.ReadCommand();
+            Commands = ConfigRead.ReadCommand();
 
         return true;
     }
@@ -475,11 +476,11 @@ public static class Minecraft_QQ
 
         await Task.Run(() =>
         {
-            while (GroupConfig.Groups.Count == 0 || GroupSetMain == 0)
+            while (Groups.Groups.Count == 0 || GroupSetMain == 0)
             {
                 IMinecraft_QQ.ShowMessageCall?.Invoke("请设置QQ群，有且最多一个主群");
                 IMinecraft_QQ.ConfigInitCall?.Invoke();
-                foreach (var item in GroupConfig.Groups)
+                foreach (var item in Groups.Groups)
                 {
                     if (item.Value.IsMain == true)
                     {
@@ -499,7 +500,7 @@ public static class Minecraft_QQ
 
         RobotCore.SendGroupMessage(GroupSetMain,
         [
-            $"[Minecraft_QQ]已启动[{IMinecraft_QQ.Version}]"
+            MsgText.Build($"[Minecraft_QQ]已启动[{IMinecraft_QQ.Version}]")
         ]);
     }
 
@@ -515,9 +516,9 @@ public static class Minecraft_QQ
 
     public static void AddAsk(string check, string res)
     {
-        if (!AskConfig.AskList.TryAdd(check, res))
+        if (!Asks.AskList.TryAdd(check, res))
         {
-            AskConfig.AskList[check] = res;
+            Asks.AskList[check] = res;
         }
 
         ConfigWrite.Ask();

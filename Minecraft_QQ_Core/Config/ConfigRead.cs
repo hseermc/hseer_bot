@@ -83,17 +83,17 @@ internal class ConfigRead
             }
             if (config.PlayerList == null)
             {
-                config.PlayerList = new();
+                config.PlayerList = [];
                 save = true;
             }
             if (config.NotBindList == null)
             {
-                config.NotBindList = new();
+                config.NotBindList = [];
                 save = true;
             }
             if (config.MuteList == null)
             {
-                config.MuteList = new();
+                config.MuteList = [];
                 save = true;
             }
             if (save)
@@ -170,10 +170,10 @@ internal class ConfigRead
                     {
                         "服务器菜单",
                         $"服务器查询菜单：{Environment.NewLine}" +
-                        $"【{Minecraft_QQ.MainConfig.Check.Head}{Minecraft_QQ.MainConfig.Check.Bind} ID】可以绑定你的游戏ID。{Environment.NewLine}" +
-                        $"【{Minecraft_QQ.MainConfig.Check.Head}{Minecraft_QQ.MainConfig.Check.PlayList}】可以查询服务器在线人数。{Environment.NewLine}" +
-                        $"【{Minecraft_QQ.MainConfig.Check.Head}{Minecraft_QQ.MainConfig.Check.ServerCheck}】可以查询服务器是否在运行。{Environment.NewLine}" +
-                        $"【{Minecraft_QQ.MainConfig.Check.Head}{Minecraft_QQ.MainConfig.Check.Send} 内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，）"}
+                        $"【{Minecraft_QQ.Main.Check.Head}{Minecraft_QQ.Main.Check.Bind} ID】可以绑定你的游戏ID。{Environment.NewLine}" +
+                        $"【{Minecraft_QQ.Main.Check.Head}{Minecraft_QQ.Main.Check.PlayList}】可以查询服务器在线人数。{Environment.NewLine}" +
+                        $"【{Minecraft_QQ.Main.Check.Head}{Minecraft_QQ.Main.Check.ServerCheck}】可以查询服务器是否在运行。{Environment.NewLine}" +
+                        $"【{Minecraft_QQ.Main.Check.Head}{Minecraft_QQ.Main.Check.Send} 内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，）"}
                 };
                 save = true;
             }
@@ -209,7 +209,7 @@ internal class ConfigRead
                 config.CommandList = new()
                 {
                     {
-                        "插件帮助",
+                        "help",
                         new()
                         {
                             Command = "qq help",
@@ -218,7 +218,7 @@ internal class ConfigRead
                         }
                     },
                     {
-                        "查钱",
+                        "money",
                         new()
                         {
                             Command = "money {arg:name}",
@@ -227,16 +227,16 @@ internal class ConfigRead
                         }
                     },
                     {
-                        "禁言",
+                        "mute",
                         new()
                         {
-                            Command = "mute {arg1}",
+                            Command = "mute {arg:next}",
                             PlayerUse = false,
                             PlayerSend = false
                         }
                     },
                     {
-                        "传送",
+                        "tpa",
                         new()
                         {
                             Command = "tpa {arg:at}",
@@ -245,19 +245,19 @@ internal class ConfigRead
                         }
                     },
                     {
-                        "给权限",
+                        "lp",
                         new()
                         {
-                            Command = "lp user {arg:at} permission set {arg1} true",
+                            Command = "lp user {arg:at} permission set {arg:next} true",
                             PlayerUse = false,
                             PlayerSend = false
                         }
                     },
                     {
-                        "说话",
+                        "say",
                         new()
                         {
-                            Command = "say {argx}",
+                            Command = "say {arg:x}",
                             PlayerUse = false,
                             PlayerSend = false
                         }

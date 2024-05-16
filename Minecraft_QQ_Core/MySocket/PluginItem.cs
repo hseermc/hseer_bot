@@ -2,6 +2,7 @@
 using DotNetty.Transport.Channels;
 using Minecraft_QQ_Core.Robot;
 using Minecraft_QQ_Core.Utils;
+using OneBotSharp.Objs.Message;
 using System;
 using System.Threading.Tasks;
 
@@ -35,17 +36,17 @@ public class PluginItem(IChannel client)
                     Channel.CloseAsync();
                     return;
                 }
-                if (Minecraft_QQ.MainConfig.Setting.SendLog)
+                if (Minecraft_QQ.Main.Setting.SendLog)
                 {
                     RobotCore.SendGroupMessage(Minecraft_QQ.GroupSetMain,
-                        [$"[Minecraft_QQ]服务器{Name}已连接"]);
+                        [MsgText.Build($"[Minecraft_QQ]服务器{Name}已连接")]);
                 }
                 Logs.LogOut($"[Socket]服务器{Name}已连接");
                 IMinecraft_QQ.GuiCall?.Invoke(GuiCallType.ServerList);
-                if (Minecraft_QQ.MainConfig.Setting.SendLog)
+                if (Minecraft_QQ.Main.Setting.SendLog)
                 {
                     RobotCore.SendGroupMessage(Minecraft_QQ.GroupSetMain,
-                        ["[Minecraft_QQ]服务器已连接"]);
+                        [MsgText.Build("[Minecraft_QQ]服务器已连接")]);
                 }
                 PluginServer.AddServer(Name, this);
                 IMinecraft_QQ.GuiCall?.Invoke(GuiCallType.ServerList);
@@ -55,9 +56,9 @@ public class PluginItem(IChannel client)
         }
         catch (Exception e)
         {
-            if (Minecraft_QQ.MainConfig.Setting.SendLog)
+            if (Minecraft_QQ.Main.Setting.SendLog)
                 RobotCore.SendGroupMessage(Minecraft_QQ.GroupSetMain,
-                    [$"[Minecraft_QQ]服务器{Name}异常断开"]);
+                    [MsgText.Build($"[Minecraft_QQ]服务器{Name}异常断开")]);
             Logs.LogError(e);
             Stop();
             if (!IsSameStop)

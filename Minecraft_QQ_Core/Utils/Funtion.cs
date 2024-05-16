@@ -1,8 +1,10 @@
 ﻿using Minecraft_QQ_Core.Robot;
 using Newtonsoft.Json.Linq;
+using OneBotSharp.Objs.Message;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace Minecraft_QQ_Core.Utils;
@@ -77,7 +79,7 @@ public static class Funtion
         else
             return text;
     }
-    public static string ReplaceFirst(string value, string oldValue, string newValue)
+    public static string ReplaceFirst(this string value, string oldValue, string newValue)
     {
         if (string.IsNullOrWhiteSpace(oldValue))
             return value;
@@ -109,13 +111,13 @@ public static class Funtion
         else
             return a[x..];
     }
-    public static string? GetRich(GroupMessagePack.Message a)
+    public static async Task<string?> GetRich(MsgBase a)
     {
         try
         {
-            if (a.type == "json")
+            if (a is MsgJson json)
             {
-                var obj = JObject.Parse(a.data["data"]!.ToString());
+                var obj = JObject.Parse(json.Data.Data!);
                 var app = obj["app"]?.ToString();
                 if (app == "com.tencent.qq.checkin")
                 {
@@ -131,32 +133,20 @@ public static class Funtion
                 }
 
             }
-            else if (a.type == "forward")
+            else if (a is MsgForward msg)
             {
-                string text = a.GetText()!;
-                XmlDocument doc = new();
-                doc.LoadXml(text);
-                if (text.Contains("聊天记录"))
+                var text = await msg.GetMsg(RobotCore.Robot.Pipe);
+                if (text == null)
                 {
-                    var items = "";
-                    var body = doc.GetElementsByTagName("title");
-                    var title = body[0]!.InnerText.Trim();
-                    for (int i = 1; i < body.Count; i++)
-                    {
-                        var item = body[i];
-                        items += item!.InnerText.Trim().Remove(0, 3) + "\n";
-                    }
-                    items = items[..^1];
-                    return "聊天记录：" + title + "\n" + items;
+                    return null;
                 }
-                else if (text.Contains("推荐群聊"))
+                var list = text.Messages;
+                var items = new StringBuilder();
+                foreach (var item in list)
                 {
-                    var body = doc.GetElementsByTagName("msg");
-                    var title = body[0]!.Attributes!.GetNamedItem("brief");
-                    var group = body[0]!.Attributes!.GetNamedItem("actionData");
-
-                    return title!.Value + " " + group!.Value!.Replace("group:", "");
+                    items.AppendLine(item.ToString());
                 }
+                return "聊天记录：\n" + items.ToString()[..^1];
             }
         }
         catch (Exception e)

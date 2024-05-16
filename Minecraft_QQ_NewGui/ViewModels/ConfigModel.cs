@@ -83,7 +83,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Check;
+        var con = Minecraft_QQ.Main.Check;
         con.Head = value;
         ConfigWrite.Config();
     }
@@ -95,7 +95,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Check;
+        var con = Minecraft_QQ.Main.Check;
         con.ServerCheck = value;
         ConfigWrite.Config();
     }
@@ -107,7 +107,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Check;
+        var con = Minecraft_QQ.Main.Check;
         con.PlayList = value;
         ConfigWrite.Config();
     }
@@ -119,7 +119,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Check;
+        var con = Minecraft_QQ.Main.Check;
         con.Bind = value;
         ConfigWrite.Config();
     }
@@ -131,7 +131,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Check;
+        var con = Minecraft_QQ.Main.Check;
         con.Send = value;
         ConfigWrite.Config();
     }
@@ -143,7 +143,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Setting;
+        var con = Minecraft_QQ.Main.Setting;
         con.AskEnable = value;
         ConfigWrite.Config();
     }
@@ -155,7 +155,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Setting;
+        var con = Minecraft_QQ.Main.Setting;
         con.ColorEnable = value;
         ConfigWrite.Config();
     }
@@ -167,7 +167,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Setting;
+        var con = Minecraft_QQ.Main.Setting;
         con.AutoSend = value;
         ConfigWrite.Config();
     }
@@ -179,7 +179,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Setting;
+        var con = Minecraft_QQ.Main.Setting;
         con.CanBind = value;
         ConfigWrite.Config();
     }
@@ -191,7 +191,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Setting;
+        var con = Minecraft_QQ.Main.Setting;
         con.SendCommand = value;
         ConfigWrite.Config();
     }
@@ -203,7 +203,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Setting;
+        var con = Minecraft_QQ.Main.Setting;
         con.SendLog = value;
         ConfigWrite.Config();
     }
@@ -215,7 +215,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Setting;
+        var con = Minecraft_QQ.Main.Setting;
         con.FixMode = value;
         ConfigWrite.Config();
     }
@@ -227,7 +227,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Setting;
+        var con = Minecraft_QQ.Main.Setting;
         con.SendNickGroup = value;
         ConfigWrite.Config();
     }
@@ -239,7 +239,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Setting;
+        var con = Minecraft_QQ.Main.Setting;
         con.SendNickServer = value;
         ConfigWrite.Config();
     }
@@ -251,7 +251,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Setting;
+        var con = Minecraft_QQ.Main.Setting;
         con.SendDelay = (int)value;
         ConfigWrite.Config();
     }
@@ -263,7 +263,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Setting;
+        var con = Minecraft_QQ.Main.Setting;
         con.SendQQ = (long)value;
         ConfigWrite.Config();
     }
@@ -275,7 +275,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Setting;
+        var con = Minecraft_QQ.Main.Setting;
         con.BotUrl = value;
         ConfigWrite.Config();
     }
@@ -287,7 +287,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Setting;
+        var con = Minecraft_QQ.Main.Setting;
         con.BotAuthorization = value;
         ConfigWrite.Config();
     }
@@ -299,7 +299,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Admin;
+        var con = Minecraft_QQ.Main.Admin;
         con.Mute = value;
         ConfigWrite.Config();
     }
@@ -311,7 +311,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Admin;
+        var con = Minecraft_QQ.Main.Admin;
         con.UnMute = value;
         ConfigWrite.Config();
     }
@@ -323,7 +323,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Admin;
+        var con = Minecraft_QQ.Main.Admin;
         con.Nick = value;
         ConfigWrite.Config();
     }
@@ -335,7 +335,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Admin;
+        var con = Minecraft_QQ.Main.Admin;
         con.CheckBind = value;
         ConfigWrite.Config();
     }
@@ -347,7 +347,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Admin;
+        var con = Minecraft_QQ.Main.Admin;
         con.Fix = value;
         ConfigWrite.Config();
     }
@@ -359,7 +359,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Admin;
+        var con = Minecraft_QQ.Main.Admin;
         con.Reload = value;
         ConfigWrite.Config();
     }
@@ -371,7 +371,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Admin;
+        var con = Minecraft_QQ.Main.Admin;
         con.GetCantBindList = value;
         ConfigWrite.Config();
     }
@@ -383,7 +383,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Admin;
+        var con = Minecraft_QQ.Main.Admin;
         con.GetMuteList = value;
         ConfigWrite.Config();
     }
@@ -395,7 +395,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Admin;
+        var con = Minecraft_QQ.Main.Admin;
         con.Rename = value;
         ConfigWrite.Config();
     }
@@ -407,7 +407,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Message;
+        var con = Minecraft_QQ.Main.Message;
         con.FixText = value;
         ConfigWrite.Config();
     }
@@ -419,7 +419,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Message;
+        var con = Minecraft_QQ.Main.Message;
         con.FixText = value;
         ConfigWrite.Config();
     }
@@ -431,7 +431,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Message;
+        var con = Minecraft_QQ.Main.Message;
         con.CantBindText = value;
         ConfigWrite.Config();
     }
@@ -443,7 +443,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Message;
+        var con = Minecraft_QQ.Main.Message;
         con.NoneBindID = value;
         ConfigWrite.Config();
     }
@@ -455,7 +455,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             return;
         }
 
-        var con = Minecraft_QQ.MainConfig.Message;
+        var con = Minecraft_QQ.Main.Message;
         con.AlreadyBindID = value;
         ConfigWrite.Config();
     }
@@ -464,7 +464,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
     {
         _isLoad = true;
         {
-            var con = Minecraft_QQ.MainConfig.Check;
+            var con = Minecraft_QQ.Main.Check;
             CommandHead = con.Head;
             CommandOnline = con.ServerCheck;
             CommandPlayer = con.PlayList;
@@ -472,7 +472,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             CommandSend = con.Send;
         }
         {
-            var con = Minecraft_QQ.MainConfig.Setting;
+            var con = Minecraft_QQ.Main.Setting;
             SettingAsk = con.AskEnable;
             SettingColor = con.ColorEnable;
             SettingAuto = con.AutoSend;
@@ -488,7 +488,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             SettingAuth = con.BotAuthorization;
         }
         {
-            var con = Minecraft_QQ.MainConfig.Admin;
+            var con = Minecraft_QQ.Main.Admin;
             AdminMute = con.Mute;
             AdminUnmute = con.UnMute;
             AdminNick = con.Nick;
@@ -500,7 +500,7 @@ public partial class ConfigModel(WindowModel top) : ObservableObject
             AdminMuteList = con.GetMuteList;
         }
         {
-            var con = Minecraft_QQ.MainConfig.Message;
+            var con = Minecraft_QQ.Main.Message;
             MessageFix = con.FixText;
             MessageUnknow = con.UnknowText;
             MessageBind = con.CantBindText;

@@ -179,7 +179,13 @@ public record SettingConfig
     /// 发送绑定信息QQ号
     /// </summary>
     public long SendQQ { get; set; }
+    /// <summary>
+    /// 机器人地址
+    /// </summary>
     public string BotUrl { get; set; }
+    /// <summary>
+    /// 机器人鉴权
+    /// </summary>
     public string? BotAuthorization { get; set; }
 
     public SettingConfig()
@@ -194,7 +200,7 @@ public record SettingConfig
         SendLog = true;
         SendCommand = false;
         SendDelay = 100;
-        BotUrl = "ws://127.0.0.1:8081/";
+        BotUrl = "ws://localhost:8081/";
     }
 
     public override string ToString()

@@ -281,7 +281,7 @@ public partial class MainWindow : Window
 
         Dispatcher.UIThread.Post(() =>
         {
-            if (DataContext is WindowModel model)
+            if (DataContext is WindowModel model && model.ServerItem != null)
             {
                 new ServerFlyout((sender as Control)!, model.ServerItem);
             }

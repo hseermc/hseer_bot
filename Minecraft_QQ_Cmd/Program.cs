@@ -16,7 +16,7 @@ class Program
         IMinecraft_QQ.ConfigInitCall = ConfigInit;
         await Minecraft_QQ.Start();
 
-        if (!Minecraft_QQ.MainConfig.Admin.NoInput)
+        if (!Minecraft_QQ.Main.Admin.NoInput)
         {
             while (true)
             {
@@ -56,7 +56,7 @@ class Program
 
     private static void ConfigInit() 
     {
-        if (Minecraft_QQ.MainConfig.Admin.NoInput)
+        if (Minecraft_QQ.Main.Admin.NoInput)
         {
             Console.WriteLine("你需要在配置文件中设置主群才能继续使用");
             Environment.Exit(1);
@@ -70,7 +70,7 @@ class Program
             if (long.TryParse(a, out var group))
             {
                 group = Math.Abs(group);
-                Minecraft_QQ.GroupConfig.Groups.Add(group, new()
+                Minecraft_QQ.Groups.Groups.Add(group, new()
                 {
                     Group = group,
                     EnableCommand = true,

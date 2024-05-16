@@ -1,6 +1,8 @@
 ﻿using Minecraft_QQ_Core.Robot;
+using OneBotSharp.Objs.Message;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 
 namespace Minecraft_QQ_Core.Utils;
@@ -28,7 +30,7 @@ public static class SendGroup
             if (SendList.Count != 0)
             {
                 var group = SendList.First().Group;
-                string temp = "";
+                var temp = new StringBuilder();
                 lock (SendList)
                 {
                     var SendList_C = SendList.Where(a => a.Group == group);
@@ -38,18 +40,17 @@ public static class SendGroup
                         if (string.IsNullOrWhiteSpace(a.Message) == false)
                         {
                             have = true;
-                            temp += a.Message + "\n";
+                            temp.AppendLine(a.Message);
                         }
                     }
                     if (have)
                     {
-                        temp = temp[0..^1];
-                        RobotCore.SendGroupMessage(group, [temp]);
+                        RobotCore.SendGroupMessage(group, [MsgText.Build(temp.ToString().Trim())]);
                     }
                     SendList.RemoveAll(a => a.Group == group);
                 }
             }
-            Thread.Sleep(Minecraft_QQ.MainConfig.Setting.SendDelay);
+            Thread.Sleep(Minecraft_QQ.Main.Setting.SendDelay);
         }
     }
     public static void Start()

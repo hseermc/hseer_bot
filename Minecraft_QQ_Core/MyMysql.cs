@@ -21,7 +21,7 @@ public static class MyMysql
     /// </summary>
     public static void MysqlStart()
     {
-        ConnectString = Minecraft_QQ.MainConfig.Database.Url;
+        ConnectString = Minecraft_QQ.Main.Database.Url;
 
         Minecraft_QQ.MysqlOK = InitPlayerTable() && InitMuteTable() && InitNotIDTable();
     }
@@ -141,13 +141,13 @@ public static class MyMysql
     /// <returns></returns>
     private static void LoadPlayerAsync()
     {
-        Minecraft_QQ.PlayerConfig.PlayerList.Clear();
+        Minecraft_QQ.Players.PlayerList.Clear();
         using var conn = new MySqlConnection(ConnectString);
         var list = conn.Query<PlayerObj>($"SELECT `Name`,`Nick`,`IsAdmin`,`QQ` FROM {MysqlPlayerTable}");
 
         foreach (var item in list)
         {
-            Minecraft_QQ.PlayerConfig.PlayerList.Add(item.QQ, item);
+            Minecraft_QQ.Players.PlayerList.Add(item.QQ, item);
         }
     }
 
@@ -161,15 +161,15 @@ public static class MyMysql
     /// <returns></returns>
     private static void LoadMuteAsync()
     {
-        Minecraft_QQ.PlayerConfig.MuteList.Clear();
+        Minecraft_QQ.Players.MuteList.Clear();
         using var conn = new MySqlConnection(ConnectString);
         var list = conn.Query<Obj2>($"SELECT `Name` FROM {MysqlMuteTable}");
 
         foreach (var item in list)
         {
             if (!string.IsNullOrWhiteSpace(item.Name))
-                if (Minecraft_QQ.PlayerConfig.MuteList.Contains(item.Name.ToLower()) == false)
-                    Minecraft_QQ.PlayerConfig.MuteList.Add(item.Name.ToLower());
+                if (Minecraft_QQ.Players.MuteList.Contains(item.Name.ToLower()) == false)
+                    Minecraft_QQ.Players.MuteList.Add(item.Name.ToLower());
         }
     }
     /// <summary>
@@ -178,15 +178,15 @@ public static class MyMysql
     /// <returns></returns>
     private static void LoadNotIDAsync()
     {
-        Minecraft_QQ.PlayerConfig.NotBindList.Clear();
+        Minecraft_QQ.Players.NotBindList.Clear();
         using var conn = new MySqlConnection(ConnectString);
         var list = conn.Query<Obj2>($"SELECT `Name` FROM {MysqlNotIDTable}");
 
         foreach (var item in list)
         {
             if (!string.IsNullOrWhiteSpace(item.Name))
-                if (Minecraft_QQ.PlayerConfig.NotBindList.Contains(item.Name.ToLower()) == false)
-                    Minecraft_QQ.PlayerConfig.NotBindList.Add(item.Name.ToLower());
+                if (Minecraft_QQ.Players.NotBindList.Contains(item.Name.ToLower()) == false)
+                    Minecraft_QQ.Players.NotBindList.Add(item.Name.ToLower());
         }
     }
 
