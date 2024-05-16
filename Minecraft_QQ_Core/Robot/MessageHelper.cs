@@ -499,6 +499,13 @@ public static class MessageHelper
             {
                 for (int a = 1; a < list.Count; a++)
                 {
+                    if (list[a] is MsgText text1)
+                    {
+                        if (text1.Data.Text.StartsWith("[分享] 不支持的消息类型，请到手机上查看"))
+                        {
+                            continue;
+                        }
+                    }
                     builder.Append(list[a].ToString());
                 }
             }

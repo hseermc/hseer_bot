@@ -129,9 +129,17 @@ public static class Funtion
                 }
                 else if (app == "com.tencent.structmsg")
                 {
+                    if (obj["view"]?.ToString() == "music")
+                    {
+                        return obj["prompt"]?.ToString() + "\n" + obj["meta"]?["music"]?["jumpUrl"]?.ToString();
+                    }
                     return obj["prompt"]?.ToString() + "\n" + "链接：" + obj["meta"]?["news"]?["jumpUrl"]?.ToString();
                 }
-
+                else if (app == "com.tencent.troopsharecard")
+                {
+                    return obj["prompt"]?.ToString() + "：" + obj["meta"]?["contact"]?["nickname"]?.ToString() 
+                        + "\n" + obj["meta"]?["contact"]?["jumpUrl"]?.ToString();
+                }
             }
             else if (a is MsgForward msg)
             {
