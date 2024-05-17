@@ -1,6 +1,8 @@
 @echo off
 setlocal enabledelayedexpansion
 
+git submodule update --init --recursive --remote
+
 mkdir .\build_out
 
 call :build_win_gui win-x64

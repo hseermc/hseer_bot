@@ -1,5 +1,7 @@
 #!/bin/bash
 
+git submodule update --init --recursive --remote
+
 name="Minecraft_QQ"
 
 mkdir ./build_out
