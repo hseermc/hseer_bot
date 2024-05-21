@@ -4,7 +4,7 @@ Minecraft_QQ 插件本体(Cmd/NewGui)
 机器人使用[Onebot](https://onebot.dev/)v11协议的机器人即可   
 例如[Lagrange](https://github.com/LagrangeDev/Lagrange.Core)  
 
-[MCBBS帖子](http://www.mcbbs.net/thread-788137-1-1.html)
+[Minebbs](https://www.minebbs.com/resources/minecraft_qq.8250)
 
 ## 连接说明
 
