@@ -34,18 +34,18 @@ public static class MessageHelper
             return "错误的参数";
         }
         string data = text.Data.Text;
-        if (data.StartsWith(Minecraft_QQ.Main.Check.Head))
+        if (data.StartsWith(Minecraft_QQ.Config.Check.Head))
         {
-            data = data.Replace(Minecraft_QQ.Main.Check.Head, null);
+            data = data.Replace(Minecraft_QQ.Config.Check.Head, null);
         }
-        if (Minecraft_QQ.Main.Setting.CanBind == false)
+        if (Minecraft_QQ.Config.Setting.CanBind == false)
         {
-            return Minecraft_QQ.Main.Message.CantBindText;
+            return Minecraft_QQ.Config.Message.CantBindText;
         }
         var player = Minecraft_QQ.GetPlayer(fromQQ);
         if (player == null || string.IsNullOrWhiteSpace(player.Name) == true)
         {
-            string name = data.Replace(Minecraft_QQ.Main.Check.Bind, "").Trim();
+            string name = data.Replace(Minecraft_QQ.Config.Check.Bind, "").Trim();
             string check = name.ToLower();
             if (string.IsNullOrWhiteSpace(name) || check.StartsWith("id:")
                 || check.StartsWith("id：") || check.StartsWith("id "))
@@ -59,9 +59,9 @@ public static class MessageHelper
                     return $"禁止绑定名字[{name}]";
                 }
                 Minecraft_QQ.SetPlayerName(fromQQ, name);
-                if (Minecraft_QQ.Main.Setting.SendQQ != 0)
+                if (Minecraft_QQ.Config.Setting.SendQQ != 0)
                 {
-                    RobotCore.SendPrivateMessage(Minecraft_QQ.Main.Setting.SendQQ,
+                    RobotCore.SendPrivateMessage(Minecraft_QQ.Config.Setting.SendQQ,
                         [MsgText.Build($"QQ号[{fromQQ}]绑定了名字：[{name}]")]);
                 }
                 IMinecraft_QQ.GuiCall?.Invoke(GuiCallType.PlayerList);
@@ -69,7 +69,7 @@ public static class MessageHelper
             }
         }
         else
-            return Minecraft_QQ.Main.Message.AlreadyBindID;
+            return Minecraft_QQ.Config.Message.AlreadyBindID;
     }
 
     private static string MutePlayer(List<MsgBase> msg)
@@ -91,8 +91,8 @@ public static class MessageHelper
         else if (msg[0] is MsgText text)
         {
             name = text.Data.Text
-                .ReplaceFirst(Minecraft_QQ.Main.Check.Head, "")
-                .ReplaceFirst(Minecraft_QQ.Main.Admin.Mute, "")
+                .ReplaceFirst(Minecraft_QQ.Config.Check.Head, "")
+                .ReplaceFirst(Minecraft_QQ.Config.Admin.Mute, "")
                 .Trim();
         }
         else
@@ -126,8 +126,8 @@ public static class MessageHelper
         else if (msg[0] is MsgText text)
         {
             name = text.Data.Text
-                .ReplaceFirst(Minecraft_QQ.Main.Check.Head, "")
-                .ReplaceFirst(Minecraft_QQ.Main.Admin.UnMute, "")
+                .ReplaceFirst(Minecraft_QQ.Config.Check.Head, "")
+                .ReplaceFirst(Minecraft_QQ.Config.Admin.UnMute, "")
                 .Trim();
         }
         else
@@ -159,8 +159,8 @@ public static class MessageHelper
         else if (msg[0] is MsgText text)
         {
             string data = text.Data.Text
-                .ReplaceFirst(Minecraft_QQ.Main.Check.Head, "")
-                .ReplaceFirst(Minecraft_QQ.Main.Admin.CheckBind, "")
+                .ReplaceFirst(Minecraft_QQ.Config.Check.Head, "")
+                .ReplaceFirst(Minecraft_QQ.Config.Admin.CheckBind, "")
                 .Trim();
             if (long.TryParse(data, out long qq) == false)
             {
@@ -233,14 +233,14 @@ public static class MessageHelper
     private static string FixModeChange()
     {
         string text;
-        if (Minecraft_QQ.Main.Setting.FixMode == false)
+        if (Minecraft_QQ.Config.Setting.FixMode == false)
         {
-            Minecraft_QQ.Main.Setting.FixMode = true;
+            Minecraft_QQ.Config.Setting.FixMode = true;
             text = "服务器维护模式已开启";
         }
         else
         {
-            Minecraft_QQ.Main.Setting.FixMode = false;
+            Minecraft_QQ.Config.Setting.FixMode = false;
             text = "服务器维护模式已关闭";
         }
         ConfigWrite.Config();
@@ -249,9 +249,9 @@ public static class MessageHelper
     }
     private static string? GetOnlinePlayer(long fromGroup)
     {
-        if (Minecraft_QQ.Main.Setting.FixMode)
+        if (Minecraft_QQ.Config.Setting.FixMode)
         {
-            return Minecraft_QQ.Main.Message.FixText;
+            return Minecraft_QQ.Config.Message.FixText;
         }
         if (PluginServer.IsReady() == true)
         {
@@ -269,9 +269,9 @@ public static class MessageHelper
     }
     private static string? GetOnlineServer(long fromGroup)
     {
-        if (Minecraft_QQ.Main.Setting.FixMode)
+        if (Minecraft_QQ.Config.Setting.FixMode)
         {
-            return Minecraft_QQ.Main.Message.FixText;
+            return Minecraft_QQ.Config.Message.FixText;
         }
         if (PluginServer.IsReady() == true)
         {
@@ -296,7 +296,7 @@ public static class MessageHelper
         foreach (var item in Minecraft_QQ.Commands.CommandList)
         {
             string head = text.Data.Text
-                .ReplaceFirst(Minecraft_QQ.Main.Check.Head, "");
+                .ReplaceFirst(Minecraft_QQ.Config.Check.Head, "");
             if (!head.StartsWith(item.Key))
             {
                 continue;
@@ -477,7 +477,7 @@ public static class MessageHelper
     /// <param name="list"></param>
     private static async void SendMessage(GroupObj group, PlayerObj? player, string msg, List<MsgBase> list)
     {
-        var config = Minecraft_QQ.Main;
+        var config = Minecraft_QQ.Config;
         if (msg.StartsWith(config.Check.Head) && !config.Setting.SendCommand)
         {
             return;
@@ -520,7 +520,7 @@ public static class MessageHelper
                 {
                     group = group.Group.ToString(),
                     message = send,
-                    player = !Minecraft_QQ.Main.Setting.SendNickServer ?
+                    player = !Minecraft_QQ.Config.Setting.SendNickServer ?
                     player.Name : string.IsNullOrWhiteSpace(player.Nick) ?
                     player.Name : player.Nick,
                     command = CommderList.SPEAK
@@ -541,7 +541,7 @@ public static class MessageHelper
         if (IMinecraft_QQ.IsStart == false)
             return;
         Logs.LogOut($"[{fromGroup}][QQ:{fromQQ}]:{raw}");
-        var config = Minecraft_QQ.Main;
+        var config = Minecraft_QQ.Config;
         if (Minecraft_QQ.Groups.Groups.ContainsKey(fromGroup) == true)
         {
             var group = Minecraft_QQ.Groups.Groups[fromGroup];
@@ -555,27 +555,27 @@ public static class MessageHelper
             {
                 SendMessage(group, player, raw, msg);
             }
-            if (raw.StartsWith(Minecraft_QQ.Main.Check.Head) && group.EnableCommand == true)
+            if (raw.StartsWith(Minecraft_QQ.Config.Check.Head) && group.EnableCommand == true)
             {
                 if (msg[0] is not MsgText text)
                 {
                     return;
                 }
-                string msg_low = text.ToString()[Minecraft_QQ.Main.Check.Head.Length..];
-                if (Minecraft_QQ.Main.Setting.AutoSend == false && msg_low.StartsWith(Minecraft_QQ.Main.Check.Send))
+                string msg_low = text.ToString()[Minecraft_QQ.Config.Check.Head.Length..];
+                if (Minecraft_QQ.Config.Setting.AutoSend == false && msg_low.StartsWith(Minecraft_QQ.Config.Check.Send))
                 {
                     if (group.EnableSay == false)
                     {
                         RobotCore.SendGroupMessage(fromGroup, [MsgText.Build("该群没有开启聊天功能")]);
                     }
-                    else if (Minecraft_QQ.Main.Setting.FixMode)
+                    else if (Minecraft_QQ.Config.Setting.FixMode)
                     {
-                        if (!string.IsNullOrWhiteSpace(Minecraft_QQ.Main.Message.FixText))
+                        if (!string.IsNullOrWhiteSpace(Minecraft_QQ.Config.Message.FixText))
                         {
                             RobotCore.SendGroupMessage(fromGroup, 
                             [
                                 MsgAt.BuildAt(fromQQ.ToString()),
-                                MsgText.Build(Minecraft_QQ.Main.Message.FixText)
+                                MsgText.Build(Minecraft_QQ.Config.Message.FixText)
                             ]);
                         }
                     }
@@ -589,12 +589,12 @@ public static class MessageHelper
                     }
                     else if (player == null || string.IsNullOrWhiteSpace(player.Name))
                     {
-                        if (!string.IsNullOrWhiteSpace(Minecraft_QQ.Main.Message.NoneBindID))
+                        if (!string.IsNullOrWhiteSpace(Minecraft_QQ.Config.Message.NoneBindID))
                         {
                             RobotCore.SendGroupMessage(fromGroup, 
                             [
                                 MsgAt.BuildAt(fromQQ.ToString()),
-                                MsgText.Build(Minecraft_QQ.Main.Message.NoneBindID)
+                                MsgText.Build(Minecraft_QQ.Config.Message.NoneBindID)
                             ]);
                         }
                         return;
@@ -612,8 +612,8 @@ public static class MessageHelper
                         try
                         {
                             string msg_copy = raw;
-                            msg_copy = msg_copy.Replace(Minecraft_QQ.Main.Check.Send, "");
-                            if (Minecraft_QQ.Main.Setting.ColorEnable == false)
+                            msg_copy = msg_copy.Replace(Minecraft_QQ.Config.Check.Send, "");
+                            if (Minecraft_QQ.Config.Setting.ColorEnable == false)
                                 msg_copy = Funtion.RemoveColorCodes(msg_copy);
                             if (string.IsNullOrWhiteSpace(msg_copy) == false)
                             {
@@ -621,7 +621,7 @@ public static class MessageHelper
                                 {
                                     group = DataType.group,
                                     message = msg_copy,
-                                    player = !Minecraft_QQ.Main.Setting.SendNickServer ?
+                                    player = !Minecraft_QQ.Config.Setting.SendNickServer ?
                                     player.Name : string.IsNullOrWhiteSpace(player.Nick) ?
                                     player.Name : player.Nick,
                                     command = CommderList.SPEAK
@@ -637,7 +637,7 @@ public static class MessageHelper
                 }
                 else if (player != null && player.IsAdmin == true)
                 {
-                    if (msg_low.StartsWith(Minecraft_QQ.Main.Admin.Mute))
+                    if (msg_low.StartsWith(Minecraft_QQ.Config.Admin.Mute))
                     {
                         RobotCore.SendGroupMessage(fromGroup,
                         [
@@ -646,7 +646,7 @@ public static class MessageHelper
                         ]);
                         return;
                     }
-                    else if (msg_low.StartsWith(Minecraft_QQ.Main.Admin.UnMute))
+                    else if (msg_low.StartsWith(Minecraft_QQ.Config.Admin.UnMute))
                     {
                         RobotCore.SendGroupMessage(fromGroup,
                         [
@@ -655,7 +655,7 @@ public static class MessageHelper
                         ]);
                         return;
                     }
-                    else if (msg_low.StartsWith(Minecraft_QQ.Main.Admin.CheckBind))
+                    else if (msg_low.StartsWith(Minecraft_QQ.Config.Admin.CheckBind))
                     {
                         RobotCore.SendGroupMessage(fromGroup,
                         [
@@ -664,7 +664,7 @@ public static class MessageHelper
                         ]);
                         return;
                     }
-                    else if (msg_low.StartsWith(Minecraft_QQ.Main.Admin.Rename))
+                    else if (msg_low.StartsWith(Minecraft_QQ.Config.Admin.Rename))
                     {
                         RobotCore.SendGroupMessage(fromGroup,
                         [
@@ -673,7 +673,7 @@ public static class MessageHelper
                         ]);
                         return;
                     }
-                    else if (msg_low == Minecraft_QQ.Main.Admin.Fix)
+                    else if (msg_low == Minecraft_QQ.Config.Admin.Fix)
                     {
                         RobotCore.SendGroupMessage(fromGroup,
                         [
@@ -682,24 +682,24 @@ public static class MessageHelper
                         ]);
                         return;
                     }
-                    else if (msg_low == Minecraft_QQ.Main.Admin.GetMuteList)
+                    else if (msg_low == Minecraft_QQ.Config.Admin.GetMuteList)
                     {
                         RobotCore.SendGroupMessage(fromGroup, [MsgText.Build(GetMuteList())]);
                         return;
                     }
-                    else if (msg_low == Minecraft_QQ.Main.Admin.GetCantBindList)
+                    else if (msg_low == Minecraft_QQ.Config.Admin.GetCantBindList)
                     {
                         RobotCore.SendGroupMessage(fromGroup, [MsgText.Build(GetCantBind())]);
                         return;
                     }
-                    else if (msg_low == Minecraft_QQ.Main.Admin.Reload)
+                    else if (msg_low == Minecraft_QQ.Config.Admin.Reload)
                     {
                         RobotCore.SendGroupMessage(fromGroup, [MsgText.Build("开始重读配置文件")]);
                         Minecraft_QQ.Reload();
                         RobotCore.SendGroupMessage(fromGroup, [MsgText.Build("重读完成")]);
                         return;
                     }
-                    else if (msg_low.StartsWith(Minecraft_QQ.Main.Admin.Nick))
+                    else if (msg_low.StartsWith(Minecraft_QQ.Config.Admin.Nick))
                     {
                         RobotCore.SendGroupMessage(fromGroup,
                         [
@@ -709,20 +709,20 @@ public static class MessageHelper
                         return;
                     }
                 }
-                if (msg_low == Minecraft_QQ.Main.Check.PlayList)
+                if (msg_low == Minecraft_QQ.Config.Check.PlayList)
                 {
                     var test = GetOnlinePlayer(fromGroup);
                     if (test != null)
                         RobotCore.SendGroupMessage(fromGroup, [MsgText.Build(test)]);
                 }
-                else if (msg_low == Minecraft_QQ.Main.Check.ServerCheck)
+                else if (msg_low == Minecraft_QQ.Config.Check.ServerCheck)
                 {
                     var test = GetOnlineServer(fromGroup);
                     if (test != null)
                         RobotCore.SendGroupMessage(fromGroup, [MsgText.Build(test)]);
                 }
 
-                else if (msg_low.StartsWith(Minecraft_QQ.Main.Check.Bind))
+                else if (msg_low.StartsWith(Minecraft_QQ.Config.Check.Bind))
                 {
                     var str = SetPlayerName(fromQQ, msg);
                     if (str != null)
@@ -738,7 +738,7 @@ public static class MessageHelper
                 {
 
                 }
-                else if (Minecraft_QQ.Main.Setting.AskEnable
+                else if (Minecraft_QQ.Config.Setting.AskEnable
                     && Minecraft_QQ.Asks.AskList.ContainsKey(msg_low) == true)
                 {
                     string message = Minecraft_QQ.Asks.AskList[msg_low];
@@ -747,9 +747,9 @@ public static class MessageHelper
                         RobotCore.SendGroupMessage(fromGroup, [MsgText.Build(message)]);
                     }
                 }
-                else if (string.IsNullOrWhiteSpace(Minecraft_QQ.Main.Message.UnknowText) == false)
+                else if (string.IsNullOrWhiteSpace(Minecraft_QQ.Config.Message.UnknowText) == false)
                 {
-                    RobotCore.SendGroupMessage(fromGroup, [MsgText.Build(Minecraft_QQ.Main.Message.UnknowText)]);
+                    RobotCore.SendGroupMessage(fromGroup, [MsgText.Build(Minecraft_QQ.Config.Message.UnknowText)]);
                 }
             }
         }

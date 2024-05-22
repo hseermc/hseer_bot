@@ -2,10 +2,8 @@
 using Minecraft_QQ_Core.MySocket;
 using Minecraft_QQ_Core.Robot;
 using Minecraft_QQ_Core.Utils;
-using Newtonsoft.Json;
 using OneBotSharp.Objs.Message;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,15 +19,15 @@ public static class Minecraft_QQ
     /// <summary>
     /// Mysql启用
     /// </summary>
-    public static bool MysqlOK = false;
+    public static bool MysqlOK { get; set; } = false;
     /// <summary>
     /// 主群群号
     /// </summary>
-    public static long GroupSetMain { get; set; } = 0;
+    public static long MainGroup { get; set; }
     /// <summary>
     /// 主配置文件
     /// </summary>
-    public static MainConfig Main { get; set; }
+    public static MainConfig Config { get; set; }
     /// <summary>
     /// 玩家储存配置
     /// </summary>
@@ -55,7 +53,9 @@ public static class Minecraft_QQ
     public static PlayerObj? GetPlayer(long qq)
     {
         if (Players.PlayerList.TryGetValue(qq, out var value))
+        {
             return value;
+        }
         return null;
     }
     /// <summary>
@@ -68,7 +68,9 @@ public static class Minecraft_QQ
         var valueCol = Players.PlayerList.Values.Where(a =>
             a.Name.Equals(id, StringComparison.CurrentCultureIgnoreCase));
         if (valueCol.Any())
+        {
             return valueCol.First();
+        }
         return null;
     }
 
@@ -94,7 +96,7 @@ public static class Minecraft_QQ
 
         if (MysqlOK == true)
         {
-            Task.Run(() => MyMysql.AddPlayerAsync(Players.PlayerList[qq]));
+            Task.Run(() => DBMysql.AddPlayerAsync(Players.PlayerList[qq]));
         }
         else
         {
@@ -118,7 +120,7 @@ public static class Minecraft_QQ
         }
         if (MysqlOK == true)
         {
-            Task.Run(() => MyMysql.AddPlayerAsync(player));
+            Task.Run(() => DBMysql.AddPlayerAsync(player));
         }
         else
         {
@@ -144,7 +146,7 @@ public static class Minecraft_QQ
         }
         if (MysqlOK == true)
         {
-            Task.Run(() => MyMysql.AddPlayerAsync(player1));
+            Task.Run(() => DBMysql.AddPlayerAsync(player1));
         }
         else
         {
@@ -165,7 +167,7 @@ public static class Minecraft_QQ
         }
         if (MysqlOK == true)
         {
-            Task.Run(() => MyMysql.AddMuteAsync(name));
+            Task.Run(() => DBMysql.AddMuteAsync(name));
         }
         else
         {
@@ -186,7 +188,7 @@ public static class Minecraft_QQ
         }
         if (MysqlOK == true)
         {
-            Task.Run(() => MyMysql.AddNotBindAsync(name));
+            Task.Run(() => DBMysql.AddNotBindAsync(name));
         }
         else
         {
@@ -204,7 +206,7 @@ public static class Minecraft_QQ
         Players.NotBindList.Remove(name);
         if (MysqlOK == true)
         {
-            Task.Run(() => MyMysql.DeleteNotBindAsync(name));
+            Task.Run(() => DBMysql.DeleteNotBindAsync(name));
         }
         else
         {
@@ -247,7 +249,7 @@ public static class Minecraft_QQ
         name = name.ToLower();
         Players.MuteList.Remove(name);
         if (MysqlOK == true)
-            Task.Run(() => MyMysql.DeleteMuteAsync(name));
+            Task.Run(() => DBMysql.DeleteMuteAsync(name));
         else
             ConfigWrite.Player();
     }
@@ -258,7 +260,7 @@ public static class Minecraft_QQ
     /// <param name="open">状态</param>
     public static void FixModeChange(bool open)
     {
-        Main.Setting.FixMode = open;
+        Config.Setting.FixMode = open;
     }
 
     /// <summary>
@@ -290,179 +292,37 @@ public static class Minecraft_QQ
         ConfigFile.GroupConfig = new FileInfo(Path + "Group.json");
 
         //读取主配置文件
-        if (ConfigFile.MainConfig.Exists == false)
-        {
-            Logs.LogOut("[Config]新建主配置");
-            Main = new MainConfig();
-            File.WriteAllText(ConfigFile.MainConfig.FullName, JsonConvert.SerializeObject(Main, Formatting.Indented));
-        }
-        else
-            Main = ConfigRead.ReadConfig();
+        ConfigRead.ReadConfig();
 
         //读取群设置
-        if (ConfigFile.GroupConfig.Exists == false)
-        {
-            Logs.LogOut("[Config]新建群设置配置");
-
-            Groups = new GroupConfig()
-            {
-                Groups = []
-            };
-
-            File.WriteAllText(ConfigFile.GroupConfig.FullName, JsonConvert.SerializeObject(Groups, Formatting.Indented));
-        }
-        else
-            Groups = ConfigRead.ReadGroup();
+        ConfigRead.ReadGroup();
 
         //读自动应答消息
-        if (ConfigFile.AskConfig.Exists == false)
-        {
-            Asks = new AskConfig
-            {
-                AskList = new Dictionary<string, string>
-                {
-                    {
-                        "服务器菜单",
-                        $"服务器查询菜单：{Environment.NewLine}" +
-                        $"【{Main.Check.Head}{Main.Check.Bind} ID】可以绑定你的游戏ID。{Environment.NewLine}" +
-                        $"【{Main.Check.Head}{Main.Check.PlayList}】可以查询服务器在线人数。{Environment.NewLine}" +
-                        $"【{Main.Check.Head}{Main.Check.ServerCheck}】可以查询服务器是否在运行。{Environment.NewLine}" +
-                        $"【{Main.Check.Head}{Main.Check.Send} 内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，）"
-                    }
-                }
-            };
-            File.WriteAllText(ConfigFile.AskConfig.FullName, JsonConvert.SerializeObject(Asks, Formatting.Indented));
-        }
-        else
-            Asks = ConfigRead.ReadAsk();
+        ConfigRead.ReadAsk();
 
         //读取玩家数据
-        if (Main.Database.Enable == true)
+        if (Config.Database.Enable == true)
         {
-            MyMysql.MysqlStart();
+            DBMysql.MysqlStart();
             if (MysqlOK == false)
             {
                 Logs.LogOut("[Mysql]Mysql链接失败");
-                if (ConfigFile.PlayerConfig.Exists == false)
-                {
-                    Players = new();
-                    File.WriteAllText(ConfigFile.PlayerConfig.FullName, JsonConvert.SerializeObject(Players, Formatting.Indented));
-                }
-                else
-                    Players = ConfigRead.ReadPlayer();
+                ConfigRead.ReadPlayer();
             }
             else
             {
-                if (Players == null)
-                    Players = new();
-                MyMysql.Load();
+                Players = new();
+                DBMysql.Load();
                 Logs.LogOut("[Mysql]Mysql已连接");
             }
         }
         else
         {
-            if (ConfigFile.PlayerConfig.Exists == false)
-            {
-                Logs.LogOut("[Config]新建玩家信息储存");
-                Players = new()
-                {
-                    PlayerList = new()
-                    {
-                        {
-                            402067010,
-                            new()
-                            {
-                                QQ = 402067010,
-                                Name = "Color_yr",
-                                Nick = "Color_yr",
-                                IsAdmin = true
-                            }
-                        }
-                    },
-                    NotBindList =
-                    [
-                        "Color_yr",
-                        "id"
-                    ],
-                    MuteList =
-                    [
-                        "playerid"
-                    ]
-                };
-                File.WriteAllText(ConfigFile.PlayerConfig.FullName, JsonConvert.SerializeObject(Players, Formatting.Indented));
-            }
-            else
-                Players = ConfigRead.ReadPlayer();
+            ConfigRead.ReadPlayer();
         };
 
         //读取自定义指令
-        if (ConfigFile.CommandConfig.Exists == false)
-        {
-            Commands = new()
-            {
-                CommandList = new()
-                {
-                    {
-                        "插件帮助",
-                        new()
-                        {
-                            Command = "qq help",
-                            PlayerUse = false,
-                            PlayerSend = false
-                        }
-                    },
-                    {
-                        "查钱",
-                        new()
-                        {
-                            Command = "money {arg:name}",
-                            PlayerUse = true,
-                            PlayerSend = false
-                        }
-                    },
-                    {
-                        "禁言",
-                        new()
-                        {
-                            Command = "mute {arg1}",
-                            PlayerUse = false,
-                            PlayerSend = false
-                        }
-                    },
-                    {
-                        "传送",
-                        new()
-                        {
-                            Command = "tpa {arg:at}",
-                            PlayerUse = true,
-                            PlayerSend = false
-                        }
-                    },
-                    {
-                        "给权限",
-                        new()
-                        {
-                            Command = "lp user {arg:at} permission set {arg1} true",
-                            PlayerUse = false,
-                            PlayerSend = false
-                        }
-                    },
-                    {
-                        "说话",
-                        new()
-                        {
-                            Command = "say {argx}",
-                            PlayerUse = false,
-                            PlayerSend = false
-                        }
-                    }
-                }
-            };
-            Logs.LogOut("[Config]新建自定义指令");
-            File.WriteAllText(ConfigFile.CommandConfig.FullName, JsonConvert.SerializeObject(Commands, Formatting.Indented));
-        }
-        else
-            Commands = ConfigRead.ReadCommand();
+        ConfigRead.ReadCommand();
 
         return true;
     }
@@ -476,7 +336,7 @@ public static class Minecraft_QQ
 
         await Task.Run(() =>
         {
-            while (Groups.Groups.Count == 0 || GroupSetMain == 0)
+            while (Groups.Groups.Count == 0 || MainGroup == 0)
             {
                 IMinecraft_QQ.ShowMessageCall?.Invoke("请设置QQ群，有且最多一个主群");
                 IMinecraft_QQ.ConfigInitCall?.Invoke();
@@ -484,7 +344,7 @@ public static class Minecraft_QQ
                 {
                     if (item.Value.IsMain == true)
                     {
-                        GroupSetMain = item.Key;
+                        MainGroup = item.Key;
                         break;
                     }
                 }
@@ -498,7 +358,7 @@ public static class Minecraft_QQ
         SendGroup.Start();
         IMinecraft_QQ.IsStart = true;
 
-        RobotCore.SendGroupMessage(GroupSetMain,
+        RobotCore.SendGroupMessage(MainGroup,
         [
             MsgText.Build($"[Minecraft_QQ]已启动[{IMinecraft_QQ.Version}]")
         ]);
@@ -509,7 +369,7 @@ public static class Minecraft_QQ
         ConfigSave.Stop();
         IMinecraft_QQ.IsStart = false;
         PluginServer.ServerStop();
-        MyMysql.MysqlStop();
+        DBMysql.MysqlStop();
         RobotCore.Stop();
         SendGroup.Stop();
     }

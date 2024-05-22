@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Minecraft_QQ_Core;
 
-public static class MyMysql
+public static class DBMysql
 {
     public const string MysqlPlayerTable = "minecraft_qq_player";
     public const string MysqlMuteTable = "minecraft_qq_mute";
@@ -21,7 +21,7 @@ public static class MyMysql
     /// </summary>
     public static void MysqlStart()
     {
-        ConnectString = Minecraft_QQ.Main.Database.Url;
+        ConnectString = Minecraft_QQ.Config.Database.Url;
 
         Minecraft_QQ.MysqlOK = InitPlayerTable() && InitMuteTable() && InitNotIDTable();
     }
@@ -130,16 +130,16 @@ public static class MyMysql
     /// <returns></returns>
     public static void Load()
     {
-        LoadPlayerAsync();
-        LoadMuteAsync();
-        LoadNotIDAsync();
+        LoadPlayer();
+        LoadMute();
+        LoadNotID();
     }
 
     /// <summary>
     /// 读取玩家数据
     /// </summary>
     /// <returns></returns>
-    private static void LoadPlayerAsync()
+    private static void LoadPlayer()
     {
         Minecraft_QQ.Players.PlayerList.Clear();
         using var conn = new MySqlConnection(ConnectString);
@@ -159,7 +159,7 @@ public static class MyMysql
     /// 读取禁言数据
     /// </summary>
     /// <returns></returns>
-    private static void LoadMuteAsync()
+    private static void LoadMute()
     {
         Minecraft_QQ.Players.MuteList.Clear();
         using var conn = new MySqlConnection(ConnectString);
@@ -168,15 +168,21 @@ public static class MyMysql
         foreach (var item in list)
         {
             if (!string.IsNullOrWhiteSpace(item.Name))
-                if (Minecraft_QQ.Players.MuteList.Contains(item.Name.ToLower()) == false)
-                    Minecraft_QQ.Players.MuteList.Add(item.Name.ToLower());
+            {
+                var id = item.Name.ToLower();
+                if (!Minecraft_QQ.Players.MuteList.Contains(id))
+                {
+                    Minecraft_QQ.Players.MuteList.Add(id);
+                }
+            }
+               
         }
     }
     /// <summary>
     /// 读取禁止绑定列表
     /// </summary>
     /// <returns></returns>
-    private static void LoadNotIDAsync()
+    private static void LoadNotID()
     {
         Minecraft_QQ.Players.NotBindList.Clear();
         using var conn = new MySqlConnection(ConnectString);
@@ -185,8 +191,13 @@ public static class MyMysql
         foreach (var item in list)
         {
             if (!string.IsNullOrWhiteSpace(item.Name))
-                if (Minecraft_QQ.Players.NotBindList.Contains(item.Name.ToLower()) == false)
-                    Minecraft_QQ.Players.NotBindList.Add(item.Name.ToLower());
+            {
+                var id = item.Name.ToLower();
+                if (!Minecraft_QQ.Players.NotBindList.Contains(id))
+                {
+                    Minecraft_QQ.Players.NotBindList.Add(id);
+                }
+            }
         }
     }
 

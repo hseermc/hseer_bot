@@ -26,7 +26,7 @@ public class ConfigWrite
         {
             Name = "config",
             Local = ConfigFile.MainConfig.FullName,
-            Obj = Minecraft_QQ.Main
+            Obj = Minecraft_QQ.Config
         });
     }
     public static void Group()

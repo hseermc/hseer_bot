@@ -68,13 +68,13 @@ internal static class Message
             {
                 return;
             }
-            if (!Minecraft_QQ.Main.Setting.ColorEnable)
+            if (!Minecraft_QQ.Config.Setting.ColorEnable)
             {
                 message.message = Funtion.RemoveColorCodes(message.message);
             }
             if (message.group == DataType.group)
             {
-                if (Minecraft_QQ.Main.Setting.SendNickGroup)
+                if (Minecraft_QQ.Config.Setting.SendNickGroup)
                 {
                     var player = Minecraft_QQ.GetPlayer(message.player);
                     if (player != null && !string.IsNullOrWhiteSpace(player.Nick))

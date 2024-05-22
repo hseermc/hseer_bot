@@ -64,7 +64,7 @@ public partial class WindowModel : ObservableObject
         {
             return;
         }
-        var con = Minecraft_QQ.Main.Socket;
+        var con = Minecraft_QQ.Config.Socket;
         if (value == null || value == 0)
         {
             SocketPort = con.Port;
@@ -82,7 +82,7 @@ public partial class WindowModel : ObservableObject
         {
             return;
         }
-        var con = Minecraft_QQ.Main.Socket;
+        var con = Minecraft_QQ.Config.Socket;
         con.Check = value;
         ConfigWrite.Config();
     }
@@ -125,7 +125,7 @@ public partial class WindowModel : ObservableObject
 
     public void LoadServer()
     {
-        var con = Minecraft_QQ.Main.Socket;
+        var con = Minecraft_QQ.Config.Socket;
         SocketPort = con.Port;
         SocketCheck = con.Check;
     }

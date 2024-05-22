@@ -48,6 +48,35 @@ public record PlayerConfig
         MuteList = [];
         PlayerList = [];
     }
+
+    public static PlayerConfig Make()
+    {
+        return new()
+        {
+            PlayerList = new()
+            {
+                {
+                    402067010,
+                    new()
+                    {
+                        QQ = 402067010,
+                        Name = "Color_yr",
+                        Nick = "Color_yr",
+                        IsAdmin = true
+                    }
+                }
+            },
+            NotBindList =
+            [
+                "Color_yr",
+                "id"
+            ],
+            MuteList =
+            [
+                "playerid"
+            ]
+        };
+    }
 }
 public record CommandConfig
 {
@@ -56,9 +85,68 @@ public record CommandConfig
     /// </summary>
     public Dictionary<string, CommandObj> CommandList { get; set; }
 
-    public CommandConfig()
+    public static CommandConfig Make()
     {
-        CommandList = [];
+        return new()
+        {
+            CommandList = new()
+            {
+                {
+                    "help",
+                    new()
+                    {
+                        Command = "qq help",
+                        PlayerUse = false,
+                        PlayerSend = false
+                    }
+                },
+                {
+                    "money",
+                    new()
+                    {
+                        Command = "money {arg:name}",
+                        PlayerUse = true,
+                        PlayerSend = false
+                    }
+                },
+                {
+                    "mute",
+                    new()
+                    {
+                        Command = "mute {arg:next}",
+                        PlayerUse = false,
+                        PlayerSend = false
+                    }
+                },
+                {
+                    "tpa",
+                    new()
+                    {
+                        Command = "tpa {arg:at}",
+                        PlayerUse = true,
+                        PlayerSend = false
+                    }
+                },
+                {
+                    "lp",
+                    new()
+                    {
+                        Command = "lp user {arg:at} permission set {arg:next} true",
+                        PlayerUse = false,
+                        PlayerSend = false
+                    }
+                },
+                {
+                    "say",
+                    new()
+                    {
+                        Command = "say {arg:x}",
+                        PlayerUse = false,
+                        PlayerSend = false
+                    }
+                }
+            }
+        };
     }
 }
 public record GroupConfig
@@ -83,6 +171,24 @@ public record AskConfig
     public AskConfig()
     {
         AskList = [];
+    }
+
+    public static AskConfig Make()
+    {
+        return new()
+        {
+            AskList = new()
+            {
+                { 
+                    "服务器菜单",
+                    $"服务器查询菜单：{Environment.NewLine}" +
+                    $"【{Minecraft_QQ.Config.Check.Head}{Minecraft_QQ.Config.Check.Bind} ID】可以绑定你的游戏ID。{Environment.NewLine}" +
+                    $"【{Minecraft_QQ.Config.Check.Head}{Minecraft_QQ.Config.Check.PlayList}】可以查询服务器在线人数。{Environment.NewLine}" +
+                    $"【{Minecraft_QQ.Config.Check.Head}{Minecraft_QQ.Config.Check.ServerCheck}】可以查询服务器是否在运行。{Environment.NewLine}" +
+                    $"【{Minecraft_QQ.Config.Check.Head}{Minecraft_QQ.Config.Check.Send} 内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，）"
+                } 
+            }
+        };
     }
 }
 public record MainConfig
@@ -200,7 +306,7 @@ public record SettingConfig
         SendLog = true;
         SendCommand = false;
         SendDelay = 100;
-        BotUrl = "ws://localhost:8081/";
+        BotUrl = "ws://127.0.0.1:8081/";
     }
 
     public override string ToString()

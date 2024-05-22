@@ -16,7 +16,7 @@ class Program
         IMinecraft_QQ.ConfigInitCall = ConfigInit;
         await Minecraft_QQ.Start();
 
-        if (!Minecraft_QQ.Main.Admin.NoInput)
+        if (!Minecraft_QQ.Config.Admin.NoInput)
         {
             while (true)
             {
@@ -56,7 +56,7 @@ class Program
 
     private static void ConfigInit() 
     {
-        if (Minecraft_QQ.Main.Admin.NoInput)
+        if (Minecraft_QQ.Config.Admin.NoInput)
         {
             Console.WriteLine("你需要在配置文件中设置主群才能继续使用");
             Environment.Exit(1);

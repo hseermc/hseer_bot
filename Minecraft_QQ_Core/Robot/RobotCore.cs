@@ -33,8 +33,8 @@ public static class RobotCore
 
     public static void Start()
     {
-        Robot = Bot.MakePipe(Minecraft_QQ.Main.Setting.BotUrl,
-                Minecraft_QQ.Main.Setting.BotAuthorization);
+        Robot = Bot.MakePipe(Minecraft_QQ.Config.Setting.BotUrl,
+                Minecraft_QQ.Config.Setting.BotAuthorization);
         Robot.Pipe.EventRecv += Robot_EventRecv;
         Robot.Pipe.StateChange += Pipe_StateChange;
         thread = new Thread(Run);

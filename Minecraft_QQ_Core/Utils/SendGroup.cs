@@ -50,7 +50,7 @@ public static class SendGroup
                     SendList.RemoveAll(a => a.Group == group);
                 }
             }
-            Thread.Sleep(Minecraft_QQ.Main.Setting.SendDelay);
+            Thread.Sleep(Minecraft_QQ.Config.Setting.SendDelay);
         }
     }
     public static void Start()
