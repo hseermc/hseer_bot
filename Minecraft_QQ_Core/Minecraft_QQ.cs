@@ -1,12 +1,12 @@
-﻿using Minecraft_QQ_Core.Config;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Minecraft_QQ_Core.Config;
 using Minecraft_QQ_Core.MySocket;
 using Minecraft_QQ_Core.Robot;
 using Minecraft_QQ_Core.Utils;
 using OneBotSharp.Objs.Message;
-using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Minecraft_QQ_Core;
 

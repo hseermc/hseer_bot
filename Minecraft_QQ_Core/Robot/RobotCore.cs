@@ -1,16 +1,13 @@
-﻿using Minecraft_QQ_Core.Utils;
-using Newtonsoft.Json.Linq;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Threading;
+using Minecraft_QQ_Core.Utils;
 using OneBotSharp;
 using OneBotSharp.Objs.Api;
 using OneBotSharp.Objs.Event;
 using OneBotSharp.Objs.Message;
 using OneBotSharp.Protocol;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Minecraft_QQ_Core.Robot;
 
@@ -97,7 +94,7 @@ public static class RobotCore
             Logs.LogOut("[OneBot]机器人链接错误");
             if (run == false)
             {
-                return;    
+                return;
             }
             Logs.LogError(e);
             restart = true;

@@ -1,10 +1,10 @@
-﻿using Dapper;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Dapper;
 using Minecraft_QQ_Core.Config;
 using Minecraft_QQ_Core.Utils;
 using MySqlConnector;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Minecraft_QQ_Core;
 
@@ -175,7 +175,7 @@ public static class DBMysql
                     Minecraft_QQ.Players.MuteList.Add(id);
                 }
             }
-               
+
         }
     }
     /// <summary>

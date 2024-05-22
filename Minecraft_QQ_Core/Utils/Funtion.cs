@@ -1,11 +1,10 @@
-﻿using Minecraft_QQ_Core.Robot;
-using Newtonsoft.Json.Linq;
-using OneBotSharp.Objs.Message;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
+using Minecraft_QQ_Core.Robot;
+using Newtonsoft.Json.Linq;
+using OneBotSharp.Objs.Message;
 
 namespace Minecraft_QQ_Core.Utils;
 
@@ -137,7 +136,7 @@ public static class Funtion
                 }
                 else if (app == "com.tencent.troopsharecard")
                 {
-                    return obj["prompt"]?.ToString() + "：" + obj["meta"]?["contact"]?["nickname"]?.ToString() 
+                    return obj["prompt"]?.ToString() + "：" + obj["meta"]?["contact"]?["nickname"]?.ToString()
                         + "\n" + obj["meta"]?["contact"]?["jumpUrl"]?.ToString();
                 }
             }

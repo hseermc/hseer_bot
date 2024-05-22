@@ -1,4 +1,7 @@
-﻿using DotNetty.Buffers;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using DotNetty.Buffers;
 using DotNetty.Codecs;
 using DotNetty.Handlers.Logging;
 using DotNetty.Transport.Bootstrapping;
@@ -7,9 +10,6 @@ using DotNetty.Transport.Channels.Sockets;
 using Minecraft_QQ_Core.Robot;
 using Minecraft_QQ_Core.Utils;
 using OneBotSharp.Objs.Message;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 
 namespace Minecraft_QQ_Core.MySocket;
 

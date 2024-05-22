@@ -1,10 +1,10 @@
-﻿using Minecraft_QQ_Core.Config;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Minecraft_QQ_Core.Config;
 using Minecraft_QQ_Core.MySocket;
 using Minecraft_QQ_Core.Utils;
 using OneBotSharp.Objs.Message;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Minecraft_QQ_Core.Robot;
 
@@ -411,7 +411,7 @@ public static class MessageHelper
                 }
                 else if (item1 == "{arg:next}")
                 {
-                    if (nowlist == null || index3 >= nowlist.Length )
+                    if (nowlist == null || index3 >= nowlist.Length)
                     {
                         index1++;
                         if (index1 >= msg.Count || msg[index1] is not MsgText text1)
@@ -550,7 +550,7 @@ public static class MessageHelper
             //SendMessage(group, player, raw, msg);
 
             //始终发送
-            if (config.Setting.AutoSend && !config.Setting.FixMode && PluginServer.IsReady() 
+            if (config.Setting.AutoSend && !config.Setting.FixMode && PluginServer.IsReady()
                 && group.EnableSay && player != null)
             {
                 SendMessage(group, player, raw, msg);
@@ -572,7 +572,7 @@ public static class MessageHelper
                     {
                         if (!string.IsNullOrWhiteSpace(Minecraft_QQ.Config.Message.FixText))
                         {
-                            RobotCore.SendGroupMessage(fromGroup, 
+                            RobotCore.SendGroupMessage(fromGroup,
                             [
                                 MsgAt.BuildAt(fromQQ.ToString()),
                                 MsgText.Build(Minecraft_QQ.Config.Message.FixText)
@@ -581,7 +581,7 @@ public static class MessageHelper
                     }
                     else if (PluginServer.IsReady() == false)
                     {
-                        RobotCore.SendGroupMessage(fromGroup, 
+                        RobotCore.SendGroupMessage(fromGroup,
                         [
                             MsgAt.BuildAt(fromQQ.ToString()),
                             MsgText.Build("发送失败，没有服务器链接")
@@ -591,7 +591,7 @@ public static class MessageHelper
                     {
                         if (!string.IsNullOrWhiteSpace(Minecraft_QQ.Config.Message.NoneBindID))
                         {
-                            RobotCore.SendGroupMessage(fromGroup, 
+                            RobotCore.SendGroupMessage(fromGroup,
                             [
                                 MsgAt.BuildAt(fromQQ.ToString()),
                                 MsgText.Build(Minecraft_QQ.Config.Message.NoneBindID)

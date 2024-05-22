@@ -179,14 +179,14 @@ public record AskConfig
         {
             AskList = new()
             {
-                { 
+                {
                     "服务器菜单",
                     $"服务器查询菜单：{Environment.NewLine}" +
                     $"【{Minecraft_QQ.Config.Check.Head}{Minecraft_QQ.Config.Check.Bind} ID】可以绑定你的游戏ID。{Environment.NewLine}" +
                     $"【{Minecraft_QQ.Config.Check.Head}{Minecraft_QQ.Config.Check.PlayList}】可以查询服务器在线人数。{Environment.NewLine}" +
                     $"【{Minecraft_QQ.Config.Check.Head}{Minecraft_QQ.Config.Check.ServerCheck}】可以查询服务器是否在运行。{Environment.NewLine}" +
                     $"【{Minecraft_QQ.Config.Check.Head}{Minecraft_QQ.Config.Check.Send} 内容】可以向服务器里发送消息。（使用前请确保已经绑定了ID，）"
-                } 
+                }
             }
         };
     }
