@@ -69,6 +69,7 @@ public static class RobotCore
         if (arg2 is ISendRecvPipe.PipeState.ConnectFail
             or ISendRecvPipe.PipeState.Disconnected)
         {
+            Logs.LogOut("[OneBot]链接机器人失败");
             send = false;
             if (run == false)
             {
@@ -79,6 +80,7 @@ public static class RobotCore
         }
         else if (arg2 == ISendRecvPipe.PipeState.Connected)
         {
+            Logs.LogOut("[OneBot]链接机器人成功");
             send = true;
         }
     }
@@ -87,11 +89,13 @@ public static class RobotCore
     {
         try
         {
+            Logs.LogOut("[OneBot]开始链接机器人");
             Robot.Start();
         }
         catch (Exception e)
         {
-            if(run == false)
+            Logs.LogOut("[OneBot]机器人链接错误");
+            if (run == false)
             {
                 return;    
             }
