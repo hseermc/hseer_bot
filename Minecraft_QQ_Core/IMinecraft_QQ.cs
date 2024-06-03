@@ -19,8 +19,8 @@ public class IMinecraft_QQ
     public delegate void Gui(GuiCallType dofun);
     public delegate void Log(string message);
 
-    public static ShowMessage ShowMessageCall;
-    public static ConfigInit ConfigInitCall;
+    public static ShowMessage ShowMessageCall { get; set; }
+    public static ConfigInit ConfigInitCall { get; set; }
     public static Gui GuiCall { get; set; }
     public static Log LogCall { get; set; }
 }

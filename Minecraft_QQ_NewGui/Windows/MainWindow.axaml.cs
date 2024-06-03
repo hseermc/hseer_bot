@@ -9,6 +9,7 @@ using Minecraft_QQ_NewGui.ViewModels;
 using System;
 using System.ComponentModel;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Minecraft_QQ_NewGui.Windows;
 
@@ -36,6 +37,7 @@ public partial class MainWindow : Window
         CommandDataGrid.PointerPressed += CommandDataGrid_PointerPressed;
         DataContextChanged += MainWindow_DataContextChanged;
         Closing += MainWindow_Closing;
+        Opened += MainWindow_Opened;
 
         IMinecraft_QQ.ShowMessageCall = (data) =>
         {
@@ -89,6 +91,15 @@ public partial class MainWindow : Window
                 }
             });
         };
+    }
+
+    private async void MainWindow_Opened(object? sender, EventArgs e)
+    {
+        await Task.Run(Minecraft_QQ.Start);
+        if (DataContext is WindowModel model)
+        {
+            model.Load();
+        }
     }
 
     private void CommandDataGrid_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -288,13 +299,11 @@ public partial class MainWindow : Window
         });
     }
 
-    private async void MainWindow_DataContextChanged(object? sender, EventArgs e)
+    private void MainWindow_DataContextChanged(object? sender, EventArgs e)
     {
         if (DataContext is WindowModel model)
         {
             model.PropertyChanged += Model_PropertyChanged;
-            await Minecraft_QQ.Start();
-            model.Load();
         }
     }
 
