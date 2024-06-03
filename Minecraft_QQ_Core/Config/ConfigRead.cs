@@ -112,10 +112,12 @@ internal class ConfigRead
                 config.MuteList = [];
                 save = true;
             }
+
+            Minecraft_QQ.Players = config;
+
             if (save)
             {
                 IMinecraft_QQ.ShowMessageCall?.Invoke("Player.json配置文件读取失败，已经重写");
-                Minecraft_QQ.Players = config;
                 ConfigWrite.Player();
             }
         }
