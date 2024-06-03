@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Net;
 using DotNetty.Buffers;
 using DotNetty.Codecs;
 using DotNetty.Handlers.Logging;
@@ -80,7 +81,7 @@ public static class PluginServer
                 }));
 
             BoundChannel = await bootstrap
-                .BindAsync(Minecraft_QQ.Config.Socket.Port);
+                .BindAsync(IPAddress.Any, Minecraft_QQ.Config.Socket.Port);
 
             SetState(true);
             if (Minecraft_QQ.Config.Setting.SendLog)
