@@ -374,6 +374,11 @@ public static class Minecraft_QQ
         SendGroup.Stop();
     }
 
+    /// <summary>
+    /// 添加自动应答
+    /// </summary>
+    /// <param name="check"></param>
+    /// <param name="res"></param>
     public static void AddAsk(string check, string res)
     {
         if (!Asks.AskList.TryAdd(check, res))
