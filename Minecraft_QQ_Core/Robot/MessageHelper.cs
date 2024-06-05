@@ -58,6 +58,16 @@ public static class MessageHelper
                 {
                     return $"禁止绑定名字[{name}]";
                 }
+                if (!Minecraft_QQ.Config.Setting.CanDuplicateID)
+                {
+                    foreach (var item in Minecraft_QQ.Players.PlayerList)
+                    {
+                        if (item.Value.Name.Equals(check, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            return $"改名字[{name}]已经被绑定了";
+                        }
+                    }
+                }
                 Minecraft_QQ.SetPlayerName(fromQQ, name);
                 if (Minecraft_QQ.Config.Setting.SendQQ != 0)
                 {

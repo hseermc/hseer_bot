@@ -278,6 +278,10 @@ public record SettingConfig
     /// </summary>
     public bool SendCommand { get; set; }
     /// <summary>
+    /// 是否允许重复绑定
+    /// </summary>
+    public bool CanDuplicateID { get; set; }
+    /// <summary>
     /// 发送群消息间隔
     /// </summary>
     public int SendDelay { get; set; }
