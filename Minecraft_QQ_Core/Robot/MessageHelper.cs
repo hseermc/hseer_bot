@@ -540,6 +540,10 @@ public static class MessageHelper
     {
         if (IMinecraft_QQ.IsStart == false)
             return;
+        if (msg.Count == 0)
+        {
+            return;
+        }
         Logs.LogOut($"[{fromGroup}][QQ:{fromQQ}]:{raw}");
         var config = Minecraft_QQ.Config;
         if (Minecraft_QQ.Groups.Groups.ContainsKey(fromGroup) == true)
