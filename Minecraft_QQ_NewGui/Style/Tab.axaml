@@ -26,7 +26,7 @@
                     CornerRadius="{TemplateBinding CornerRadius}">
                     <Panel>
                         <Label
-                            Name="PART_ContentPresenter"
+                            Name="PART_ContentPresenter_1"
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                             Content="{TemplateBinding Header}"
@@ -53,15 +53,15 @@
         <Setter Property="Background" Value="{setting:Colors Font}" />
     </Style>
 
-    <Style Selector="TabItem:selected /template/ Label#PART_ContentPresenter">
+    <Style Selector="TabItem:selected /template/ Label#PART_ContentPresenter_1">
         <Setter Property="Foreground" Value="{setting:Colors Font}" />
     </Style>
 
-    <Style Selector="TabItem /template/ Label#PART_ContentPresenter">
+    <Style Selector="TabItem /template/ Label#PART_ContentPresenter_1">
         <Setter Property="Foreground" Value="#FFa2a2a2" />
     </Style>
 
-    <Style Selector="TabItem:pointerover /template/ Label#PART_ContentPresenter">
+    <Style Selector="TabItem:pointerover /template/ Label#PART_ContentPresenter_1">
         <Setter Property="Foreground" Value="#FF666666" />
     </Style>
 

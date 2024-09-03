@@ -76,18 +76,20 @@ public partial class MainWindow : Window
         {
             Dispatcher.UIThread.Post(() =>
             {
-                var model = (DataContext as WindowModel)!;
-                switch (state)
+                if (DataContext is WindowModel model)
                 {
-                    case GuiCallType.ServerState:
-                        model.UpdateServer();
-                        break;
-                    case GuiCallType.ServerList:
-                        model.ServerList();
-                        break;
-                    case GuiCallType.PlayerList:
-                        model.LoadPlayer();
-                        break;
+                    switch (state)
+                    {
+                        case GuiCallType.ServerState:
+                            model.UpdateServer();
+                            break;
+                        case GuiCallType.ServerList:
+                            model.ServerList();
+                            break;
+                        case GuiCallType.PlayerList:
+                            model.LoadPlayer();
+                            break;
+                    }
                 }
             });
         };
